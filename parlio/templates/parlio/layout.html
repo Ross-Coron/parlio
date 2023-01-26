@@ -58,10 +58,30 @@
             <a class="nav-link" href="#myAlert" data-bs-toggle="collapse">Link</a>
           </li> -->
         </ul>
+
         <ul class="navbar-nav ms-auto">
+        {% if user.is_authenticated %}
+
           <li class="nav-item">
-            <a class="nav-link" href="" data-bs-target="#myModal" data-bs-toggle="modal">Log Out</a>
+            <a class="nav-link" href="#"><strong>{{ user.username }}</strong></a>
           </li>
+        
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+            <!-- TODO <a class="nav-link" href="{% url 'logout' %}" data-bs-target="#myModal" data-bs-toggle="modal">Log Out</a> -->
+          </li>
+
+        {% else %}
+
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'register' %}">Register</a>
+          </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}"> Log In</a>
+          </li>
+
+        {% endif %}
         </ul>
       </div>
     </div>
