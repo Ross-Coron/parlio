@@ -6,3 +6,5 @@ from django.http import HttpResponse
 def index(request):
 
     return render(request, "parlio/index.html")
+
+    #return HttpResponse("Hello, world!")
