@@ -1,4 +1,6 @@
-/** { border: 1px solid black; }*/
+div {
+    outline: 1px solid red;
+}
 
 @media (min-width: 768px) {
 	.navbar-brand.abs
