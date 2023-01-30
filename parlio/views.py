@@ -15,6 +15,11 @@ def index(request):
         })
 
 
+def annunciator(request):
+
+    return render(request, "parlio/annunciator.html")
+
+
 # Log user in
 def login_view(request):
     if request.method == "POST":
