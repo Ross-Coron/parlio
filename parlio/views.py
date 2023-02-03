@@ -51,7 +51,7 @@ def logout_view(request):
 # Register a new user
 def register(request):
     if request.method == "POST":
-        username = request.POST["username"]
+        username = request.POST["usernme"]
         email = request.POST["email"]
 
         # Ensure password matches confirmation
@@ -74,3 +74,10 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "parlio/register.html")
+
+# Test route for fetch
+def fetch(request):
+
+  
+
+    return render(request, "parlio/fetch.html")

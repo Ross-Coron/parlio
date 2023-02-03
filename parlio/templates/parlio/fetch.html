@@ -1,0 +1,51 @@
+{% extends "parlio/layout.html" %}
+
+{% block body %}
+{% load static %}
+
+<button onclick="updateAnnunciator()">Begin</button>
+<h1 id="topic1">a</h1>
+<h1 id="topic2">b</h1>
+<h1 id="speaker">c</h1>
+<h1 id="timeBegan">d</h1>
+<h1 id="timeCurrent">e</h1>
+
+
+<script type="text/javascript">
+
+  url = "https://now-api.parliament.uk/api/Message/message/LordsMain/current"
+
+  const topicOnePlaceholder = document.getElementById("topic1")
+  const topicTwoPlaceholder = document.getElementById("topic2")
+  const speakerPlaceholder  = document.getElementById("speaker")
+  const timeBeganPlaceholder  = document.getElementById("timeBegan")
+  const timeCurrentPlaceholder  = document.getElementById("timeCurrent")
+  var audio = new Audio('https://media.geeksforgeeks.org/wp-content/uploads/20190531135120/beep.mp3')
+
+  setInterval(updateAnnunciator, 5000);
+
+  async function updateAnnunciator() {
+    
+    const response = await fetch(url);
+    const data = await response.json();
+
+    //topicOne = data['slides'][0]['lines'][0]['content']
+    //topicTwo = data['slides'][0]['lines'][1]['content']
+    //speaker = data['slides'][0]['lines'][2]['member']['nameDisplayAs']
+    //timeBegan = data['slides'][0]['speakerTime']
+    var timeCurrent = new Date();
+
+    if (timeCurrentPlaceholder.innerHTML != timeCurrent.toLocaleTimeString('en-GB', { timeStyle: 'short'})) {
+      console.log("New minute")
+      audio.play();
+    }
+
+    //topicOnePlaceholder.innerHTML = topicOne
+    //topicTwoPlaceholder.innerHTML = topicTwo
+    //speakerPlaceholder.innerHTML = speaker
+    //timeBeganPlaceholder.innerHTML = timeBegan
+    timeCurrentPlaceholder.innerHTML = timeCurrent.toLocaleTimeString('en-GB', { timeStyle: 'short'});
+  }
+
+</script>
+{% endblock %}

@@ -6,5 +6,7 @@ urlpatterns = [
     path("annunciator", views.annunciator, name="annunciator"),
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
-    path("register", views.register, name="register")
+    path("register", views.register, name="register"),
+
+    path("fetch", views.fetch, name="fetch")
 ]
