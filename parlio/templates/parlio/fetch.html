@@ -4,48 +4,59 @@
 {% load static %}
 
 <button onclick="updateAnnunciator()">Begin</button>
-<h1 id="topic1">a</h1>
-<h1 id="topic2">b</h1>
-<h1 id="speaker">c</h1>
-<h1 id="timeBegan">d</h1>
-<h1 id="timeCurrent">e</h1>
-
+<h1 id="notSitting"></h1><br>
+<h1 id="topic1"></h1><br>
+<h1 id="topic2"></h1><br>
+<h1 id="speaker"></h1><br>
+<h1 id="timeBegan"></h1><br>
+<h1 id="timeCurrent"></h1><br>
 
 <script type="text/javascript">
 
   url = "https://now-api.parliament.uk/api/Message/message/LordsMain/current"
+  var audio = new Audio('https://now.parliament.uk/dist/newslide-lords.mp3')
+  var started = false;
 
+  const notSittingPlaceholder = document.getElementById("topic1")
   const topicOnePlaceholder = document.getElementById("topic1")
   const topicTwoPlaceholder = document.getElementById("topic2")
-  const speakerPlaceholder  = document.getElementById("speaker")
-  const timeBeganPlaceholder  = document.getElementById("timeBegan")
-  const timeCurrentPlaceholder  = document.getElementById("timeCurrent")
-  var audio = new Audio('https://media.geeksforgeeks.org/wp-content/uploads/20190531135120/beep.mp3')
+  const speakerPlaceholder = document.getElementById("speaker")
+  const timeBeganPlaceholder = document.getElementById("timeBegan")
+  const timeCurrentPlaceholder = document.getElementById("timeCurrent")
 
   setInterval(updateAnnunciator, 5000);
 
   async function updateAnnunciator() {
-    
+
     const response = await fetch(url);
     const data = await response.json();
 
-    //topicOne = data['slides'][0]['lines'][0]['content']
-    //topicTwo = data['slides'][0]['lines'][1]['content']
-    //speaker = data['slides'][0]['lines'][2]['member']['nameDisplayAs']
-    //timeBegan = data['slides'][0]['speakerTime']
     var timeCurrent = new Date();
 
-    if (timeCurrentPlaceholder.innerHTML != timeCurrent.toLocaleTimeString('en-GB', { timeStyle: 'short'})) {
-      console.log("New minute")
+    if (speakerPlaceholder.innerHTML != data['slides'][0]['lines'][2]['member']['nameDisplayAs']) {
+      
+      if (started == true) {
+      console.log("New speaker");
       audio.play();
+      }
     }
 
-    //topicOnePlaceholder.innerHTML = topicOne
-    //topicTwoPlaceholder.innerHTML = topicTwo
-    //speakerPlaceholder.innerHTML = speaker
-    //timeBeganPlaceholder.innerHTML = timeBegan
-    timeCurrentPlaceholder.innerHTML = timeCurrent.toLocaleTimeString('en-GB', { timeStyle: 'short'});
-  }
+    if (data['slides'][0]['type'] == "BlankSlide") {
+      notSittingPlaceholder.innerHTML = "The House is adjourned"
+    }
+
+    else {
+      topicOnePlaceholder.innerHTML = data['slides'][0]['lines'][0]['content']
+      topicTwoPlaceholder.innerHTML = topicTwo = data['slides'][0]['lines'][1]['content']
+      speakerPlaceholder.innerHTML = data['slides'][0]['lines'][2]['member']['nameDisplayAs']
+      
+      currentTime = new Date(data['slides'][0]['speakerTime'])
+      timeBeganPlaceholder.innerHTML = currentTime.toLocaleTimeString('en-GB', { timeStyle: 'short' });
+    }
+
+      timeCurrentPlaceholder.innerHTML = timeCurrent.toLocaleTimeString('en-GB', { timeStyle: 'short' });
+      started = true;
+    }
 
 </script>
 {% endblock %}
