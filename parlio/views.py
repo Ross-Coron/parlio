@@ -5,6 +5,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.db import IntegrityError
 from .models import *
+import requests
+import json
 
 # Create your views here.
 
@@ -75,9 +77,34 @@ def register(request):
     else:
         return render(request, "parlio/register.html")
 
-# Test route for fetch
+# Test route for fetch functionality
 def fetch(request):
-
-  
-
     return render(request, "parlio/fetch.html")
+
+
+def question(request):
+
+    # Check if method is POST
+    if request.method == "POST":
+
+        # Take in the data the user submitted and save it as form
+        questionId = request.POST["questionId"]
+
+        print(questionId)
+
+        url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions?uIN=" + questionId
+        print(url)
+
+
+
+        response = requests.get(url)
+        jsonResponse = response.json()
+        answer = jsonResponse["results"][0]['value']['answerText']
+       
+        return render(request, "parlio/question.html", {
+                "answer": answer
+            })
+
+    else:
+
+        return render(request, "parlio/question.html")

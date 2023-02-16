@@ -1,0 +1,14 @@
+{% extends "parlio/layout.html" %}
+
+{% block body %}
+{% load static %}
+
+<form action="{% url 'question' %}" method="post">
+  {% csrf_token %}
+  <input type="text" placeholder="Question ID" name="questionId">
+  <input type="submit">
+<form>
+
+{{ answer }}
+
+{% endblock %}
