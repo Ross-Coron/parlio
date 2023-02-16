@@ -95,11 +95,24 @@ def question(request):
         url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions?uIN=" + questionId
         print(url)
 
-
+        dictionary = {}
 
         response = requests.get(url)
         jsonResponse = response.json()
-        answer = jsonResponse["results"][0]['value']['answerText']
+        answer = jsonResponse["results"]
+
+        for foo in answer:
+            
+            a = foo['value']['id']
+            b = foo['value']['heading']
+            
+            print(foo['value']['heading'])
+
+            dictionary.update({a:b})
+
+            print(dictionary)
+
+      
        
         return render(request, "parlio/question.html", {
                 "answer": answer
