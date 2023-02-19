@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.db import IntegrityError
+
 from .models import *
 import requests
 import json
@@ -95,27 +96,36 @@ def question(request):
         url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions?uIN=" + questionId
         print(url)
 
-        dictionary = {}
+        results = []
 
         response = requests.get(url)
         jsonResponse = response.json()
         answer = jsonResponse["results"]
 
+        
         for foo in answer:
             
+            entry = {}
+
             a = foo['value']['id']
             b = foo['value']['heading']
+            c = foo['value']['dateAnswered'][0:10]
+
+            print(c)
+            print(type(c))
             
-            print(foo['value']['heading'])
+            entry.update({'id':a, 'subject':b, 'answered':c})
+            
 
-            dictionary.update({a:b})
+            results.append(entry)
+            
 
-            print(dictionary)
+        print(results)
 
       
        
         return render(request, "parlio/question.html", {
-                "answer": answer
+                "results": results
             })
 
     else:

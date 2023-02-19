@@ -9,6 +9,47 @@
   <input type="submit">
 <form>
 
-{{ answer }}
+  
+    <div class="row">
+      <div class="col">
+       
+     
+
+<table class="table">
+  <thead>
+    
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Subject</th>
+      <th scope="col">Answered</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    
+    {% for result in results %}
+    <tr>
+      {% for key, value in result.items %}
+      <td>{{value}}</td>      
+      {% endfor %}
+      {% endfor %}      
+    </tr>
+    
+  
+    
+  
+   
+    
+  </tbody>
+</table>
+
+
+</div>
+<div class="col">
+  2 of 2
+</div>
+</div>
+
+
 
 {% endblock %}
