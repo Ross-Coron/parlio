@@ -15,23 +15,29 @@
        
      
 
-<table class="table">
+<table class="table text-center align-middle">
   <thead>
     
     <tr>
       <th scope="col">ID</th>
       <th scope="col">Subject</th>
       <th scope="col">Answered</th>
+      <th scope="col">Watchlist</th>
+      <th scope="col">View</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody >
   
     
     {% for result in results %}
-    <tr>
+    <tr >
       {% for key, value in result.items %}
-      <td>{{value}}</td>      
+      <td class="align-middle" >{{value}}</td> 
       {% endfor %}
+      
+      <td class="align-middle">&#9733;</td>
+      <td><button type="button" class="btn btn-primary">View</button></td>
+      
       {% endfor %}      
     </tr>
     
