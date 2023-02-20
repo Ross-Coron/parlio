@@ -109,7 +109,11 @@ def question(request):
 
             a = foo['value']['id']
             b = foo['value']['heading']
-            c = foo['value']['dateAnswered'][0:10]
+            
+            try:
+                c = foo['value']['dateAnswered'][0:10]
+            except:
+                c = "Awaiting answer"
 
             print(c)
             print(type(c))
