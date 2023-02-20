@@ -36,7 +36,7 @@
       {% endfor %}
       
       <td class="align-middle">&#9733;</td>
-      <td><button type="button" class="btn btn-primary">View</button></td>
+      <td><button type="button" class="btn btn-primary" data-id="{{result.id}}" onclick="viewQuestion({{result.id}})">View</button></td>
       
       {% endfor %}      
     </tr>
@@ -52,10 +52,40 @@
 
 </div>
 <div class="col">
-  2 of 2
+  <p id="answeredBy"></p>
+  <p id="date"></p>
+  <p id="answer"></p>
+ 
 </div>
 </div>
 
+<script>
 
+  const answeredBy = document.getElementById('answeredBy')
+  const date = document.getElementById('date')
+  const answer = document.getElementById('answer')
+
+  async function viewQuestion(id) {
+    
+    alert("ID: " + id)
+    foo = document.getElement
+
+   // async function getQuestion() {
+        var route = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions/QUESTION?expandMember=true"
+        route = route.replace('QUESTION', id)
+
+        const response = await fetch(route);
+        const data = await response.json();
+
+        console.log(data)
+
+        answeredBy.innerHTML = data['value']['answeringMember']['name']
+        date.innerHTML = data['value']['dateAnswered']
+        answer.innerHTML = data['value']['answerText']
+
+
+  };
+</script>
 
 {% endblock %}
+
