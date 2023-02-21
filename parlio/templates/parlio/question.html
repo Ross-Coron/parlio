@@ -7,77 +7,89 @@
   {% csrf_token %}
   <input type="text" placeholder="Question ID" name="questionId">
   <input type="submit">
-<form>
+  <form>
 
-  
+
     <div class="row">
       <div class="col">
-       
-{% if results %}
 
-<table class="table text-center align-middle">
-  <thead>
-    
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Subject</th>
-      <th scope="col">Answered</th>
-      <th scope="col">Watchlist</th>
-      <th scope="col">View</th>
-    </tr>
-  </thead>
-  <tbody >
-  
-    
-    {% for result in results %}
-    <tr >
-      {% for key, value in result.items %}
-      <td class="align-middle" >{{value}}</td> 
-      {% endfor %}
+        {% if results %}
+
+        <table class="table text-center align-middle">
+          <thead>
+
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Subject</th>
+              <th scope="col">Answered</th>
+              <th scope="col">Watchlist</th>
+              <th scope="col">View</th>
+            </tr>
+          </thead>
+          <tbody>
+
+
+            {% for result in results %}
+            <tr>
+              {% for key, value in result.items %}
+              <td class="align-middle"> {% if value == "Awaiting answer" %} <button type="button"
+                  class="btn btn-primary" data-id="{{result.id}}">Notify Me!</button> {% else %} {{value}} {% endif %}
+              </td>
+              {% endfor %}
+
+              <td class="align-middle">&#9733;</td>
+              <td><button type="button" class="btn btn-primary" data-id="{{result.id}}"
+                  onclick="viewQuestion({{result.id}})">View</button></td>
+
+              {% endfor %}
+            </tr>
+
+
+
+
+
+
+          </tbody>
+        </table>
+
+
+
+
+
+      </div>
+      <div class="col" id="questionTable">
+        <p><span><b>Question: </b></span><span id="question"></span></p>
+        <p><b>Asked by: </b><span id="askedBy"></span></p>
+        <span><b>Asked on: </b><span id="askedOn"></span></p>
+        <hr>
+        <p><b>Answered by: </b><span id="answeredBy"></span></p>
+        <span><b>Answered on: </b><span id="date"></span></p>
+        <span><b>Answer: </b></span><span id="answer"></span>
+      </div>
+    </div>
+
+    {% else %}
+
+    No results found
+
+    {% endif %}
+    <script>
+
+      const questionTable = document.getElementById("questionTable")
       
-      <td class="align-middle">&#9733;</td>
-      <td><button type="button" class="btn btn-primary" data-id="{{result.id}}" onclick="viewQuestion({{result.id}})">View</button></td>
-      
-      {% endfor %}      
-    </tr>
-    
-  
-    
-  
-   
-    
-  </tbody>
-</table>
 
+      const answeredBy = document.getElementById('answeredBy')
+      const date = document.getElementById('date')
+      const answer = document.getElementById('answer')
 
+      async function viewQuestion(id) {
 
+        alert("ID: " + id)
+        foo = document.getElement
 
+        questionTable.style.visibility = "visible"
 
-</div>
-<div class="col">
-  <p><b>Answered by: </b><span id="answeredBy"></span></p>
-  <p><b>Answered on: </b><span id="date"></span></p>
-  <p><span id="answer"></span></p> 
-</div>
-</div>
-
-{% else %}
-
-No results found
-
-{% endif %}
-<script>
-
-  const answeredBy = document.getElementById('answeredBy')
-  const date = document.getElementById('date')
-  const answer = document.getElementById('answer')
-
-  async function viewQuestion(id) {
-    
-    alert("ID: " + id)
-    foo = document.getElement
-
-   // async function getQuestion() {
+        // async function getQuestion() {
         var route = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions/QUESTION?expandMember=true"
         route = route.replace('QUESTION', id)
 
@@ -87,14 +99,10 @@ No results found
         console.log(data)
 
         answeredBy.innerHTML = data['value']['answeringMember']['name']
-        
-       date.innerHTML = data['value']['dateAnswered'].slice(0, 10)
-        
+        date.innerHTML = data['value']['dateAnswered'].slice(0, 10)
+        answer.innerHTML = data['value']['answerText'].replace("<p>", "")
 
+      };
+    </script>
 
-        answer.innerHTML = data['value']['answerText']
-
-  };
-</script>
-
-{% endblock %}
+    {% endblock %}
