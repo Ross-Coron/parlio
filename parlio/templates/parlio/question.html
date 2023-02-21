@@ -13,7 +13,7 @@
     <div class="row">
       <div class="col">
        
-     
+{% if results %}
 
 <table class="table text-center align-middle">
   <thead>
@@ -50,15 +50,22 @@
 </table>
 
 
+
+
+
 </div>
 <div class="col">
-  <p id="answeredBy"></p>
-  <p id="date"></p>
-  <p id="answer"></p>
- 
+  <p><b>Answered by: </b><span id="answeredBy"></span></p>
+  <p><b>Answered on: </b><span id="date"></span></p>
+  <p><span id="answer"></span></p> 
 </div>
 </div>
 
+{% else %}
+
+No results found
+
+{% endif %}
 <script>
 
   const answeredBy = document.getElementById('answeredBy')
@@ -80,7 +87,11 @@
         console.log(data)
 
         answeredBy.innerHTML = data['value']['answeringMember']['name']
-        date.innerHTML = data['value']['dateAnswered']
+        
+       date.innerHTML = data['value']['dateAnswered'].slice(0, 10)
+        
+
+
         answer.innerHTML = data['value']['answerText']
 
   };
