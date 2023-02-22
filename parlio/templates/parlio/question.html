@@ -77,10 +77,14 @@
 
       const questionTable = document.getElementById("questionTable")
       
+      const question = document.getElementById('question')
+      const askedBy = document.getElementById('askedBy')
+      const askedOn = document.getElementById('askedOn')
 
       const answeredBy = document.getElementById('answeredBy')
       const date = document.getElementById('date')
       const answer = document.getElementById('answer')
+      
 
       async function viewQuestion(id) {
 
@@ -97,6 +101,12 @@
         const data = await response.json();
 
         console.log(data)
+
+          
+        question.innerHTML = data['value']['questionText']
+        askedBy.innerHTML = data['value']['askingMember']['name']
+        askedOn.innerHTML = data['value']['dateTabled'].slice(0, 10)
+
 
         answeredBy.innerHTML = data['value']['answeringMember']['name']
         date.innerHTML = data['value']['dateAnswered'].slice(0, 10)
