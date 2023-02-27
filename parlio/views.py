@@ -85,8 +85,11 @@ def fetch(request):
 
 def question(request):
 
+    if request.method == "GET":
+        return render(request, "parlio/question.html")
+
     # Check if method is POST
-    if request.method == "POST":
+    elif request.method == "POST":
 
         # Take in the data the user submitted and save it as form
         questionId = request.POST["questionId"]
@@ -125,6 +128,9 @@ def question(request):
             
 
         print(results)
+
+        if not results:
+            print("empty")
 
       
        

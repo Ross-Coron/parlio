@@ -89,7 +89,7 @@
 
       {% else %}
 
-      No results found
+      No question found!
 
       {% endif %}
 
@@ -106,12 +106,14 @@
         const date = document.getElementById('date')
         const answer = document.getElementById('answer')
 
+        
 
         async function viewQuestion(id) {
 
           alert("ID: " + id)
-          foo = document.getElement
-
+         
+          document.getElementById("outcome").style.visibility = "visible"
+          
           questionTable.style.visibility = "visible"
 
           // async function getQuestion() {
@@ -132,6 +134,8 @@
           answeredBy.innerHTML = data['value']['answeringMember']['name']
           date.innerHTML = data['value']['dateAnswered'].slice(0, 10)
           answer.innerHTML = data['value']['answerText'].replace("<p>", "")
+
+          
 
         };
       </script>
