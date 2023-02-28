@@ -135,7 +135,8 @@ def question(request):
       
        
         return render(request, "parlio/question.html", {
-                "results": results
+                "results": results, 
+                "questionId": questionId
             })
 
     else:
