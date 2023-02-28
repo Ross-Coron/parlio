@@ -130,13 +130,16 @@ def question(request):
         print(results)
 
         if not results:
-            print("empty")
+            status = "No questions found!"
+        else:
+            status = ""
 
       
        
         return render(request, "parlio/question.html", {
                 "results": results, 
-                "questionId": questionId
+                "questionId": questionId,
+                "status": status
             })
 
     else:

@@ -77,7 +77,7 @@
         <span><b>Answer: </b></span><span id="answer"></span>
 
             <div class="form-check text-right">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+              <input class="form-check-input" type="checkbox" value="" id="watchQuestion">
               <label class="form-check-label" for="flexCheckDefault">
                 Notify me
             </div>
@@ -89,12 +89,14 @@
 
       {% else %}
 
-      No question found!
+      {{status}}
 
       {% endif %}
 
     </div>
       <script>
+
+        
 
         const questionTable = document.getElementById("questionTable")
 
@@ -106,14 +108,13 @@
         const date = document.getElementById('date')
         const answer = document.getElementById('answer')
 
-        
+       
+
 
         async function viewQuestion(id) {
 
           alert("ID: " + id)
-         
-          document.getElementById("outcome").style.visibility = "visible"
-          
+               
           questionTable.style.visibility = "visible"
 
           // async function getQuestion() {
@@ -135,9 +136,14 @@
           date.innerHTML = data['value']['dateAnswered'].slice(0, 10)
           answer.innerHTML = data['value']['answerText'].replace("<p>", "")
 
-          
+          document.getElementById('watchQuestion').addEventListener('change', watchQuestion);
 
         };
+
+        function watchQuestion(){
+          alert("checked");
+        }
+
       </script>
 
       {% endblock %}
