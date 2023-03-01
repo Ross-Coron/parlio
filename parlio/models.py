@@ -8,3 +8,6 @@ class User(AbstractUser):
 
 class Question(models.Model):
     uniqueId = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.uniqueId}"

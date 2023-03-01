@@ -105,12 +105,23 @@ def question(request):
         jsonResponse = response.json()
         answer = jsonResponse["results"]
 
+        # Check if user has question bookmarked
+        user = User.objects.get(pk=request.user.id)
+        watchlistQuestions = user.bookmarkQuestion.first()
+        print(watchlistQuestions)
         
         for foo in answer:
             
             entry = {}
 
-            a = foo['value']['id']
+            a = int(foo['value']['id'])
+            
+            # Debug: print if question bookmarked
+            if a == watchlistQuestions.uniqueId:
+                print("It's a match!")
+            else:
+                print("It's not a match")
+
             b = foo['value']['heading']
             
             try:
@@ -126,6 +137,9 @@ def question(request):
 
             results.append(entry)
             
+
+
+
 
         print(results)
 
