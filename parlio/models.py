@@ -3,4 +3,8 @@ from django.db import models
 
 # Create your models here.
 class User(AbstractUser):
-    pass
+    bookmarkQuestion = models.ManyToManyField('Question', blank=True, related_name="bookmarkBy")
+    watchlistQuestion = models.ManyToManyField('Question', blank=True, related_name="watchlistBy")
+
+class Question(models.Model):
+    uniqueId = models.IntegerField()
