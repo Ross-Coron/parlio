@@ -116,8 +116,10 @@ def question(request):
             a = int(foo['value']['id'])
             if a in bookmarkedQuestions:
                 print("It's a match!")
+                z = True
             else:
                 print("It's not a match")
+                z = False
 
             b = foo['value']['heading']
             
@@ -127,7 +129,7 @@ def question(request):
                 c = "Awaiting answer"
             print(c)
             
-            entry.update({'id':a, 'subject':b, 'answered':c})
+            entry.update({'id':a, 'subject':b, 'answered':c, 'bookmarked': z})
             
             results.append(entry)
             

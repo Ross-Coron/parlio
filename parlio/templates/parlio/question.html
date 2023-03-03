@@ -37,28 +37,20 @@
             </tr>
           </thead>
           <tbody>
-
-
             {% for result in results %}
             <tr>
               {% for key, value in result.items %}
-              <td class="align-middle"> {% if value == "Awaiting answer" %} <button type="button"
-                  class="btn btn-primary" data-id="{{result.id}}">Notify Me!</button> {% else %} {{value}} {% endif %}
+              <td class="align-middle"> 
+                {% if value == "Awaiting answer" %} <button type="button" class="btn btn-primary" data-id="{{result.id}}">Notify Me!</button> 
+                {% elif value is True %} <a href="#" style="text-decoration:none; color: black";>&#9733</a>
+                {% elif value is False %} <a href="#" style="text-decoration:none; color: black";>&#9734</a>
+                {% else %} {{value}} {% endif %}
               </td>
               {% endfor %}
-
-              <td class="align-middle">&#9733;</td>
               <td><button type="button" class="btn btn-primary" data-id="{{result.id}}"
                   onclick="viewQuestion({{result.id}})">View</button></td>
-
               {% endfor %}
             </tr>
-
-
-
-
-
-
           </tbody>
         </table>
 
