@@ -106,18 +106,15 @@ def question(request):
         answer = jsonResponse["results"]
 
         # Check if user has question bookmarked
-        user = User.objects.get(pk=request.user.id)
-        watchlistQuestions = user.bookmarkQuestion.first()
-        print(watchlistQuestions)
-        
+        bookmarkedQuestions = Question.objects.filter(bookmarkBy=request.user).values_list('uniqueId', flat=True)
+        print("Bookmarked questions:", bookmarkedQuestions)
+ 
         for foo in answer:
             
             entry = {}
 
             a = int(foo['value']['id'])
-            
-            # Debug: print if question bookmarked
-            if a == watchlistQuestions.uniqueId:
+            if a in bookmarkedQuestions:
                 print("It's a match!")
             else:
                 print("It's not a match")
@@ -128,19 +125,12 @@ def question(request):
                 c = foo['value']['dateAnswered'][0:10]
             except:
                 c = "Awaiting answer"
-
             print(c)
-            print(type(c))
             
             entry.update({'id':a, 'subject':b, 'answered':c})
             
-
             results.append(entry)
             
-
-
-
-
         print(results)
 
         if not results:
