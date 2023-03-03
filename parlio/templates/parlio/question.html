@@ -48,15 +48,11 @@
               </td>
               {% endfor %}
               <td><button type="button" class="btn btn-primary" data-id="{{result.id}}"
-                  onclick="viewQuestion({{result.id}})">View</button></td>
+                  onclick="viewQuestion({{result.id}}, {{result.bookmarked|yesno:"true,false"}})">View</button></td>
               {% endfor %}
             </tr>
           </tbody>
         </table>
-
-
-
-
 
       </div>
       <div class="col" id="questionTable">
@@ -100,12 +96,15 @@
         const date = document.getElementById('date')
         const answer = document.getElementById('answer')
 
+        const notifyMe = document.getElementById('watchQuestion')
+
        
 
 
-        async function viewQuestion(id) {
+        async function viewQuestion(id, bookmarked) {
 
           alert("ID: " + id)
+          alert("Bookmarked: "+ bookmarked)
                
           questionTable.style.visibility = "visible"
 
@@ -129,6 +128,8 @@
           answer.innerHTML = data['value']['answerText'].replace("<p>", "")
 
           document.getElementById('watchQuestion').addEventListener('change', watchQuestion);
+          
+          notifyMe.checked = bookmarked
 
         };
 
