@@ -8,6 +8,7 @@ from django.db import IntegrityError
 from .models import *
 import requests
 import json
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -83,6 +84,8 @@ def fetch(request):
     return render(request, "parlio/fetch.html")
 
 
+
+
 def question(request):
 
     if request.method == "GET":
@@ -110,8 +113,8 @@ def question(request):
         print("Bookmarked questions:", bookmarkedQuestions)
 
         # Check if user has question on watchlist
-        watchlistQuestions = Question.objects.filter(watchlistBy=request.user).values_list('uniqueId', flat=True)
-        print("Watchlisted questions:", watchlistQuestions)
+        #watchlistQuestions = Question.objects.filter(watchlistBy=request.user).values_list('uniqueId', flat=True)
+        #print("Watchlisted questions:", watchlistQuestions)
  
         for question in questions:
             
@@ -125,6 +128,13 @@ def question(request):
                 print("It's not a match")
                 isBookmarked = False
 
+            #if questionID in watchlistQuestions:
+            #    print("It's a match!")
+            #    isWatchlisted = True
+            #else:
+            #    print("It's not a match")
+            #    isWatchlisted = False
+
             questionSubject = question['value']['heading']
             
             try:
@@ -132,11 +142,12 @@ def question(request):
             except:
                 questionAnswered = "Awaiting answer"
             
+
             entry.update({'id':questionID, 'subject':questionSubject, 'answered':questionAnswered, 'bookmarked': isBookmarked})
-            
             results.append(entry)
             
-        ## print(results)
+
+            print(results)
 
         if not results:
             status = "No questions found!"
@@ -154,3 +165,21 @@ def question(request):
     else:
 
         return render(request, "parlio/question.html")
+
+
+
+
+def onWatchlist(request, questionId):
+        
+    # Check if user has question on watchlist
+    watchlistQuestions = Question.objects.filter(watchlistBy=request.user).values_list('uniqueId', flat=True)
+    
+    if id in watchlistQuestions:
+        
+        present = True    
+        print("yes")
+    else:
+        present = False
+        print("no")
+
+    return JsonResponse({"message": "Question checked", "questionPresent": present}, status=201)

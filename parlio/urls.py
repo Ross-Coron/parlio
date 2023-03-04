@@ -9,5 +9,6 @@ urlpatterns = [
     path("register", views.register, name="register"),
     path("question", views.question, name="question"),
 
-    path("fetch", views.fetch, name="fetch")
+    path("fetch", views.fetch, name="fetch"),
+    path("onWatchlist/<int:questionId>", views.onWatchlist, name="onWatchlist")
 ]

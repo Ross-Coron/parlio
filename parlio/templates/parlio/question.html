@@ -34,6 +34,7 @@
           {% for result in results %}
           <tr>
             {% for key, value in result.items %}
+            
             <td class="align-middle">
               {% if value == "Awaiting answer" %} <i>Pending...</i>
               {% elif value is True %} <a href="#" style="text-decoration:none; color: black" ;>&#9733</a>
@@ -88,6 +89,13 @@
 
     async function viewQuestion(id, bookmarked) {
 
+      fetch(`/onWatchlist/${id}`)
+      .then((response) => response.json())
+      .then((result) => notifyMe.checked = result.questionPresent);
+      
+      
+
+
       //alert("ID: " + id)
       //alert("Bookmarked: " + bookmarked)
 
@@ -112,7 +120,7 @@
 
       document.getElementById('watchQuestion').addEventListener('change', watchQuestion);
 
-      notifyMe.checked = bookmarked
+    //  notifyMe.checked = watchlisted
     };
 
     
