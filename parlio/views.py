@@ -103,37 +103,40 @@ def question(request):
 
         response = requests.get(url)
         jsonResponse = response.json()
-        answer = jsonResponse["results"]
+        questions = jsonResponse["results"]
 
         # Check if user has question bookmarked
         bookmarkedQuestions = Question.objects.filter(bookmarkBy=request.user).values_list('uniqueId', flat=True)
         print("Bookmarked questions:", bookmarkedQuestions)
+
+        # Check if user has question on watchlist
+        watchlistQuestions = Question.objects.filter(watchlistBy=request.user).values_list('uniqueId', flat=True)
+        print("Watchlisted questions:", watchlistQuestions)
  
-        for foo in answer:
+        for question in questions:
             
             entry = {}
 
-            a = int(foo['value']['id'])
-            if a in bookmarkedQuestions:
+            questionID = int(question['value']['id'])
+            if questionID in bookmarkedQuestions:
                 print("It's a match!")
-                z = True
+                isBookmarked = True
             else:
                 print("It's not a match")
-                z = False
+                isBookmarked = False
 
-            b = foo['value']['heading']
+            questionSubject = question['value']['heading']
             
             try:
-                c = foo['value']['dateAnswered'][0:10]
+                questionAnswered = question['value']['dateAnswered'][0:10]
             except:
-                c = "Awaiting answer"
-            print(c)
+                questionAnswered = "Awaiting answer"
             
-            entry.update({'id':a, 'subject':b, 'answered':c, 'bookmarked': z})
+            entry.update({'id':questionID, 'subject':questionSubject, 'answered':questionAnswered, 'bookmarked': isBookmarked})
             
             results.append(entry)
             
-        print(results)
+        ## print(results)
 
         if not results:
             status = "No questions found!"

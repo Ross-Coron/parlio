@@ -8,7 +8,7 @@
   <form action="{% url 'question' %}" method="post">
     {% csrf_token %}
     <div class="form-group">
-      <label for="exampleInputEmail1" >Question number: </label>
+      <label for="exampleInputEmail1">Question number: </label>
       <input class="form-control" type="text" name="questionId" placeholder={{questionId}}>
       <small class="form-text text-muted">Remove any non-numeric characters e.g. 146806</small>
     </div>
@@ -16,127 +16,110 @@
   </form>
   <br><br>
 
+  <div class="row">
+    <div class="col">
 
-
-
-
-    <div class="row">
-      <div class="col">
-
-        {% if results %}
-
-        <table class="table text-center align-middle">
-          <thead>
-
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Subject</th>
-              <th scope="col">Answered</th>
-              <th scope="col">Favourite</th>
-              <th scope="col">View</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for result in results %}
-            <tr>
-              {% for key, value in result.items %}
-              <td class="align-middle"> 
-                {% if value == "Awaiting answer" %} <button type="button" class="btn btn-primary" data-id="{{result.id}}">Notify Me!</button> 
-                {% elif value is True %} <a href="#" style="text-decoration:none; color: black";>&#9733</a>
-                {% elif value is False %} <a href="#" style="text-decoration:none; color: black";>&#9734</a>
-                {% else %} {{value}} {% endif %}
-              </td>
-              {% endfor %}
-              <td><button type="button" class="btn btn-primary" data-id="{{result.id}}"
-                  onclick="viewQuestion({{result.id}}, {{result.bookmarked|yesno:"true,false"}})">View</button></td>
-              {% endfor %}
-            </tr>
-          </tbody>
-        </table>
-
-      </div>
-      <div class="col" id="questionTable">
-        <p><span><b>Question: </b></span><span id="question"></span></p>
-        <p><b>Asked by: </b><span id="askedBy"></span></p>
-        <span><b>Asked on: </b><span id="askedOn"></span></p>
-        <hr>
-        <p><b>Answered by: </b><span id="answeredBy"></span></p>
-        <span><b>Answered on: </b><span id="date"></span></p>
-        <span><b>Answer: </b></span><span id="answer"></span>
-
-            <div class="form-check text-right">
-              <input class="form-check-input" type="checkbox" value="" id="watchQuestion">
-              <label class="form-check-label" for="flexCheckDefault"> 
-                Notify me
-            </div>
-
-      </div>
-
-
-      </label>
-
-      {% else %}
-
-      {{status}}
-
-      {% endif %}
-
+      {% if results %}
+      <table class="table text-center align-middle">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Subject</th>
+            <th scope="col">Answered</th>
+            <th scope="col">Favourite</th>
+            <th scope="col">View</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for result in results %}
+          <tr>
+            {% for key, value in result.items %}
+            <td class="align-middle">
+              {% if value == "Awaiting answer" %} <i>Pending...</i>
+              {% elif value is True %} <a href="#" style="text-decoration:none; color: black" ;>&#9733</a>
+              {% elif value is False %} <a href="#" style="text-decoration:none; color: black" ;>&#9734</a>
+              {% else %} {{value}} {% endif %}
+            </td>
+            {% endfor %}
+            <td><button type="button" class="btn btn-primary" data-id="{{result.id}}"
+                onclick="viewQuestion({{result.id}}, {{result.bookmarked|yesno:" true,false"}})">View</button></td>
+            {% endfor %}
+          </tr>
+        </tbody>
+      </table>
     </div>
-      <script>
 
-        
+    <div class="col" id="questionTable">
+      <p><span><b>Question: </b></span><span id="question"></span></p>
+      <p><b>Asked by: </b><span id="askedBy"></span></p>
+      <span><b>Asked on: </b><span id="askedOn"></span></p>
+      <hr>
+      <p><b>Answered by: </b><span id="answeredBy"></span></p>
+      <span><b>Answered on: </b><span id="date"></span></p>
+      <span><b>Answer: </b></span><span id="answer"></span>
 
-        const questionTable = document.getElementById("questionTable")
+      <div class="form-check text-right">
+          <input class="form-check-input" type="checkbox" value="" id="watchQuestion">
+          <label class="form-check-label" for="flexCheckDefault">
+          Notify me
+      </div>
+    </div>
+    </label>
 
-        const question = document.getElementById('question')
-        const askedBy = document.getElementById('askedBy')
-        const askedOn = document.getElementById('askedOn')
+    {% else %}
+    {{status}}
+    {% endif %}
+  </div>
 
-        const answeredBy = document.getElementById('answeredBy')
-        const date = document.getElementById('date')
-        const answer = document.getElementById('answer')
+  <script>
 
-        const notifyMe = document.getElementById('watchQuestion')
+    const questionTable = document.getElementById("questionTable")
 
-       
+    const question = document.getElementById('question')
+    const askedBy = document.getElementById('askedBy')
+    const askedOn = document.getElementById('askedOn')
 
+    const answeredBy = document.getElementById('answeredBy')
+    const date = document.getElementById('date')
+    const answer = document.getElementById('answer')
 
-        async function viewQuestion(id, bookmarked) {
-
-          alert("ID: " + id)
-          alert("Bookmarked: "+ bookmarked)
-               
-          questionTable.style.visibility = "visible"
-
-          // async function getQuestion() {
-          var route = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions/QUESTION?expandMember=true"
-          route = route.replace('QUESTION', id)
-
-          const response = await fetch(route);
-          const data = await response.json();
-
-          console.log(data)
-
-
-          question.innerHTML = data['value']['questionText']
-          askedBy.innerHTML = data['value']['askingMember']['name']
-          askedOn.innerHTML = data['value']['dateTabled'].slice(0, 10)
+    const notifyMe = document.getElementById('watchQuestion')
 
 
-          answeredBy.innerHTML = data['value']['answeringMember']['name']
-          date.innerHTML = data['value']['dateAnswered'].slice(0, 10)
-          answer.innerHTML = data['value']['answerText'].replace("<p>", "")
+    async function viewQuestion(id, bookmarked) {
 
-          document.getElementById('watchQuestion').addEventListener('change', watchQuestion);
-          
-          notifyMe.checked = bookmarked
+      //alert("ID: " + id)
+      //alert("Bookmarked: " + bookmarked)
 
-        };
+      questionTable.style.visibility = "visible"
 
-        function watchQuestion(){
-          alert(this.dataset.id);
-        }
+      // async function getQuestion() {
+      var route = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions/QUESTION?expandMember=true"
+      route = route.replace('QUESTION', id)
 
-      </script>
+      const response = await fetch(route);
+      const data = await response.json();
 
-      {% endblock %}
+      console.log(data)
+
+      question.innerHTML = data['value']['questionText']
+      askedBy.innerHTML = data['value']['askingMember']['name']
+      askedOn.innerHTML = data['value']['dateTabled'].slice(0, 10)
+
+      answeredBy.innerHTML = data['value']['answeringMember']['name']
+      date.innerHTML = data['value']['dateAnswered'].slice(0, 10)
+      answer.innerHTML = data['value']['answerText'].replace("<p>", "")
+
+      document.getElementById('watchQuestion').addEventListener('change', watchQuestion);
+
+      notifyMe.checked = bookmarked
+    };
+
+    
+  //  function watchQuestion() {
+  //    alert(this.dataset.id);
+  //  }
+
+  </script>
+
+  {% endblock %}
