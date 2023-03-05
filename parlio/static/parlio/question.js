@@ -1,4 +1,3 @@
-
 const questionTable = document.getElementById("questionTable")
 
 const question = document.getElementById('question')
@@ -9,6 +8,9 @@ const answeredBy = document.getElementById('answeredBy')
 const date = document.getElementById('date')
 const answer = document.getElementById('answer')
 
+const answeringBody = document.getElementById('answeringBody')
+const dueAnswer = document.getElementById('dueAnswer')
+
 const notifyMe = document.getElementById('watchQuestion')
 
 
@@ -17,9 +19,6 @@ async function viewQuestion(id, bookmarked) {
     fetch(`/onWatchlist/${id}`)
         .then((response) => response.json())
         .then((result) => notifyMe.checked = result.questionPresent);
-
-    //alert("ID: " + id)
-    //alert("Bookmarked: " + bookmarked)
 
     questionTable.style.visibility = "visible"
 
@@ -36,13 +35,28 @@ async function viewQuestion(id, bookmarked) {
     askedBy.innerHTML = data['value']['askingMember']['name']
     askedOn.innerHTML = data['value']['dateTabled'].slice(0, 10)
 
-    answeredBy.innerHTML = data['value']['answeringMember']['name']
-    date.innerHTML = data['value']['dateAnswered'].slice(0, 10)
-    answer.innerHTML = data['value']['answerText'].replace("<p>", "")
+    try {
+
+        document.getElementById("answeredQuestion").style.visibility = "visible"
+        document.getElementById("unansweredQuestion").style.visibility = "hidden"
+
+        date.innerHTML = data['value']['dateAnswered'].slice(0, 10)
+        answeredBy.innerHTML = data['value']['answeringMember']['name']
+        answer.innerHTML = data['value']['answerText'].replace("<p>", "")
+
+    } catch {
+
+        document.getElementById("answeredQuestion").style.display = "none"
+        document.getElementById("unansweredQuestion").style.visibility = "visible"
+
+        dueAnswer.innerHTML = data['value']['dateForAnswer'].slice(0, 10)
+        answeringBody.innerHTML = data['value']['answeringBodyName']
+
+
+    }
 
     document.getElementById('watchQuestion').addEventListener('change', watchQuestion);
 
-    //  notifyMe.checked = watchlisted
 };
 
 
