@@ -97,10 +97,10 @@ def question(request):
         # Take in the data the user submitted and save it as form
         questionId = request.POST["questionId"]
 
-        print(questionId)
+        #print(questionId)
 
         url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions?uIN=" + questionId
-        print(url)
+        #print(url)
 
         results = []
 
@@ -110,7 +110,7 @@ def question(request):
 
         # Check if user has question bookmarked
         bookmarkedQuestions = Question.objects.filter(bookmarkBy=request.user).values_list('uniqueId', flat=True)
-        print("Bookmarked questions:", bookmarkedQuestions)
+        #print("Bookmarked questions:", bookmarkedQuestions)
 
         # Check if user has question on watchlist
         #watchlistQuestions = Question.objects.filter(watchlistBy=request.user).values_list('uniqueId', flat=True)
@@ -173,8 +173,11 @@ def onWatchlist(request, questionId):
         
     # Check if user has question on watchlist
     watchlistQuestions = Question.objects.filter(watchlistBy=request.user).values_list('uniqueId', flat=True)
+
+    print(watchlistQuestions)
+    print(questionId)
     
-    if id in watchlistQuestions:
+    if questionId in watchlistQuestions:
         
         present = True    
         print("yes")
