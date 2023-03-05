@@ -55,12 +55,24 @@ async function viewQuestion(id, bookmarked) {
 
     }
 
+    // Function called by clicking 'notify me' checkbock
     document.getElementById('watchQuestion').addEventListener('change', watchQuestion);
+    document.getElementById('watchQuestion').dataset.id = id
 
 };
 
 
-  //  function watchQuestion() {
-  //    alert(this.dataset.id);
-  //  }
+   function watchQuestion() {
+        alert(this.dataset.id)
+
+        id = this.dataset.id 
+
+      fetch(`/notifyMe/${id}`)
+        .then((response) => response.json())
+        .then((result) => alert(result.message));
+
+    
+
+
+    }
 

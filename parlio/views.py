@@ -186,3 +186,33 @@ def onWatchlist(request, questionId):
         print("no")
 
     return JsonResponse({"message": "Question checked", "questionPresent": present}, status=201)
+
+
+
+
+def notifyMe(request, questionId):
+
+    # Check if user has question on watchlist
+    watchlistQuestions = Question.objects.filter(watchlistBy=request.user).values_list('uniqueId', flat=True)
+
+    # Debug
+    print(watchlistQuestions)
+    
+    user = User.objects.filter(id=request.user.id).first()
+        
+    if questionId in watchlistQuestions:
+        
+        question = Question.objects.filter(uniqueId=questionId).first()
+        
+        user.watchlistQuestion.remove(question)
+        message = "Question removed from your watchlist"
+
+    else:
+        
+        question = Question(uniqueId=questionId)
+        question.save()
+        user.watchlistQuestion.add(question)
+
+        message = "Question added to your watchlist"
+
+    return JsonResponse({"message": message}, status=201)

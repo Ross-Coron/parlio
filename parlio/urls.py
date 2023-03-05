@@ -10,5 +10,6 @@ urlpatterns = [
     path("question", views.question, name="question"),
 
     path("fetch", views.fetch, name="fetch"),
-    path("onWatchlist/<int:questionId>", views.onWatchlist, name="onWatchlist")
+    path("onWatchlist/<int:questionId>", views.onWatchlist, name="onWatchlist"),
+    path("notifyMe/<int:questionId>", views.notifyMe, name="notifyMe")
 ]
