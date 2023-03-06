@@ -216,3 +216,8 @@ def notifyMe(request, questionId):
         message = "Question added to your watchlist"
 
     return JsonResponse({"message": message}, status=201)
+
+
+def bookmark(request, questionId):
+    print("You are here: ", questionId)
+    pass
