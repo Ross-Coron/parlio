@@ -38,9 +38,9 @@
             <td class="align-middle">
               {% if value == "Awaiting answer" %} <i>Pending...</i>
 
-              <!-- I am here -->
-              {% elif value is False %} <a id="myLink" href="#" onclick="MyFunction();" style="text-decoration:none; color: black";>&#9734</a>
-              {% elif value is True %} <a href="{% url 'bookmark' questionId=result.id  %}" style="text-decoration:none; color: black";>&#9733</a>
+              <!-- I am here <a href="{% url 'bookmark' questionId=result.id  %}" -->
+              {% elif value is False %} <a id="bookmark_{{result.id}}" href="#" onclick="bookmark({{result.id}});" style="text-decoration:none; color: black";>&#9734</a>
+              {% elif value is True %} <a id="bookmark_{{result.id}}" href="#" onclick="bookmark({{result.id}});" style="text-decoration:none; color: black";>&#9733</a>
               {% else %} {{value}} {% endif %}
             </td>
             {% endfor %}

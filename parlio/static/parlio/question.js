@@ -13,6 +13,13 @@ const dueAnswer = document.getElementById('dueAnswer')
 
 const notifyMe = document.getElementById('watchQuestion')
 
+// TODO: Check if questioned answered
+// Check questions on watchlist. If answered, remove from watchlist, add to notification
+setInterval(hello, 1000)
+
+function hello(){
+    console.log("yes")
+}
 
 async function viewQuestion(id, bookmarked) {
 
@@ -70,9 +77,30 @@ async function viewQuestion(id, bookmarked) {
       fetch(`/notifyMe/${id}`)
         .then((response) => response.json())
         .then((result) => alert(result.message));
-
-    
-
-
     }
 
+    function bookmark(questionId) {
+        alert(questionId)
+        alert(this)
+
+        fetch(`/bookmark/${questionId}`)
+            .then((response) => response.json())
+            .then((result) => {alert(result.message)
+            alert("FOO")   
+                
+            });
+        
+        // star to unstar and vice versa
+    }
+
+
+
+
+
+    async function notifyCheck() {
+
+        fetch('/notifyCheck')
+            .then((response) => response.json())
+            .then((result) => console.log(result));
+
+    }

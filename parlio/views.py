@@ -13,14 +13,12 @@ from django.http import JsonResponse
 # Create your views here.
 
 def index(request):
-
     return render(request, "parlio/index.html", {
             "message": "Hello, World!"
         })
 
 
 def annunciator(request):
-
     return render(request, "parlio/annunciator.html")
 
 
@@ -221,3 +219,37 @@ def notifyMe(request, questionId):
 def bookmark(request, questionId):
     print("You are here: ", questionId)
     pass
+
+
+
+### I am here
+def notifyCheck(request):
+
+
+
+
+    foo = Question.objects.filter(watchlistBy=request.user).values_list('uniqueId', flat=True)
+    print(foo)
+
+    for x in foo:
+        
+        # url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions/" + str(x) + "?expandMember=true"
+        url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions/1603046?expandMember=true"
+        print(url)
+
+        response = requests.get(url)
+        jsonResponse = response.json()
+        print(jsonResponse)
+
+        bar = jsonResponse['value']['dateAnswered']
+        
+        if (bar is None):
+            print("Unanswered")
+
+        else:
+            print("Answered")
+            # Create notification
+            # Remove from watchlist
+
+    return JsonResponse({"message": "Watchlist checked"}, status=201)
+    
