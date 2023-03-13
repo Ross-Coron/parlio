@@ -222,34 +222,38 @@ def bookmark(request, questionId):
 
 
 
-### I am here
+# Check if watchlist question answered. If so, remove from watchlist and create notification
 def notifyCheck(request):
 
+    watchlistQuestions = Question.objects.filter(watchlistBy=request.user).values_list('uniqueId', flat=True)
+    print(watchlistQuestions)
 
-
-
-    foo = Question.objects.filter(watchlistBy=request.user).values_list('uniqueId', flat=True)
-    print(foo)
-
-    for x in foo:
+    for question in watchlistQuestions:
         
-        # url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions/" + str(x) + "?expandMember=true"
-        url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions/1603046?expandMember=true"
+        # Test url: url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions/1603046?expandMember=true"
+        url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions/" + str(question) + "?expandMember=true"
         print(url)
 
         response = requests.get(url)
         jsonResponse = response.json()
         print(jsonResponse)
 
-        bar = jsonResponse['value']['dateAnswered']
+        dateAnswered = jsonResponse['value']['dateAnswered']
         
-        if (bar is None):
-            print("Unanswered")
+        if (dateAnswered is None):
+            print("Question remains unanswered")
 
         else:
-            print("Answered")
+            print("Question has now been answered")
+
             # Create notification
+            question = Question.objects.get(uniqueId=question)
+            notification = Notification(question=question, user=request.user)
+            notification.save()
+
             # Remove from watchlist
+            user = User.objects.get(id=request.user.id)
+            user.watchlistQuestion.remove(question)
 
     return JsonResponse({"message": "Watchlist checked"}, status=201)
     

@@ -13,13 +13,6 @@ const dueAnswer = document.getElementById('dueAnswer')
 
 const notifyMe = document.getElementById('watchQuestion')
 
-// TODO: Check if questioned answered
-// Check questions on watchlist. If answered, remove from watchlist, add to notification
-setInterval(hello, 1000)
-
-function hello(){
-    console.log("yes")
-}
 
 async function viewQuestion(id, bookmarked) {
 
@@ -43,35 +36,27 @@ async function viewQuestion(id, bookmarked) {
     askedOn.innerHTML = data['value']['dateTabled'].slice(0, 10)
 
     try {
-
         document.getElementById("answeredQuestion").style.visibility = "visible"
         document.getElementById("unansweredQuestion").style.visibility = "hidden"
-
         date.innerHTML = data['value']['dateAnswered'].slice(0, 10)
         answeredBy.innerHTML = data['value']['answeringMember']['name']
         answer.innerHTML = data['value']['answerText'].replace("<p>", "")
 
     } catch {
-
         document.getElementById("answeredQuestion").style.display = "none"
         document.getElementById("unansweredQuestion").style.visibility = "visible"
-
         dueAnswer.innerHTML = data['value']['dateForAnswer'].slice(0, 10)
         answeringBody.innerHTML = data['value']['answeringBodyName']
-
-
     }
 
     // Function called by clicking 'notify me' checkbock
     document.getElementById('watchQuestion').addEventListener('change', watchQuestion);
     document.getElementById('watchQuestion').dataset.id = id
-
 };
 
 
    function watchQuestion() {
         alert(this.dataset.id)
-
         id = this.dataset.id 
 
       fetch(`/notifyMe/${id}`)
@@ -86,21 +71,15 @@ async function viewQuestion(id, bookmarked) {
         fetch(`/bookmark/${questionId}`)
             .then((response) => response.json())
             .then((result) => {alert(result.message)
-            alert("FOO")   
-                
+            alert("FOO")     
             });
-        
         // star to unstar and vice versa
     }
 
 
-
-
-
+    // Check if watchlist question answered
     async function notifyCheck() {
-
         fetch('/notifyCheck')
             .then((response) => response.json())
             .then((result) => console.log(result));
-
     }
