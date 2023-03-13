@@ -82,6 +82,7 @@ async function notifyCheck() {
     fetch('/notifyCheck')
         .then((response) => response.json())
         .then((result) => {
+            
             console.log(result)
             
             if (result.newNotification == true){
