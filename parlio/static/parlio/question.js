@@ -1,17 +1,16 @@
 const questionTable = document.getElementById("questionTable")
-
 const question = document.getElementById('question')
 const askedBy = document.getElementById('askedBy')
 const askedOn = document.getElementById('askedOn')
-
 const answeredBy = document.getElementById('answeredBy')
 const date = document.getElementById('date')
 const answer = document.getElementById('answer')
-
 const answeringBody = document.getElementById('answeringBody')
 const dueAnswer = document.getElementById('dueAnswer')
-
 const notifyMe = document.getElementById('watchQuestion')
+
+notifyCheck()
+setInterval(notifyCheck, 300000)
 
 
 async function viewQuestion(id, bookmarked) {
@@ -55,31 +54,32 @@ async function viewQuestion(id, bookmarked) {
 };
 
 
-   function watchQuestion() {
-        alert(this.dataset.id)
-        id = this.dataset.id 
+function watchQuestion() {
+    alert(this.dataset.id)
+    id = this.dataset.id
 
-      fetch(`/notifyMe/${id}`)
+    fetch(`/notifyMe/${id}`)
         .then((response) => response.json())
         .then((result) => alert(result.message));
-    }
+}
 
-    function bookmark(questionId) {
-        alert(questionId)
-        alert(this)
+function bookmark(questionId) {
+    alert(questionId)
+    alert(this)
 
-        fetch(`/bookmark/${questionId}`)
-            .then((response) => response.json())
-            .then((result) => {alert(result.message)
-            alert("FOO")     
-            });
-        // star to unstar and vice versa
-    }
+    fetch(`/bookmark/${questionId}`)
+        .then((response) => response.json())
+        .then((result) => {
+            alert(result.message)
+            alert("FOO")
+        });
+    // star to unstar and vice versa
+}
 
 
-    // Check if watchlist question answered
-    async function notifyCheck() {
-        fetch('/notifyCheck')
-            .then((response) => response.json())
-            .then((result) => console.log(result));
-    }
+// Check if watchlist question answered
+async function notifyCheck() {
+    fetch('/notifyCheck')
+        .then((response) => response.json())
+        .then((result) => console.log(result));
+}

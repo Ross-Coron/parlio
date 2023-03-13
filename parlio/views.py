@@ -222,6 +222,7 @@ def bookmark(request, questionId):
 
 
 
+
 # Check if watchlist question answered. If so, remove from watchlist and create notification
 def notifyCheck(request):
 
