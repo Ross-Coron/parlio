@@ -256,5 +256,12 @@ def notifyCheck(request):
             user = User.objects.get(id=request.user.id)
             user.watchlistQuestion.remove(question)
 
-    return JsonResponse({"message": "Watchlist checked"}, status=201)
+    notifications = Notification.objects.filter(is_read=False, user=request.user)
+    if notifications:
+        newNotification = True
+    else:
+        newNotification = False
+
+    return JsonResponse({"message": "Question checked", "newNotification": newNotification}, status=201)
+    
     
