@@ -1,7 +1,66 @@
 {% extends "parlio/layout.html" %}
-
+{% load static %}
 {% block body %}
 
+<!-- TODO delete -->
 {{ message }}
 
+<body onload="startTime()">
+
+<div class="container ">
+  <div class="row text-center">
+    <h1 class="display-6">Welcome, {{user}}!</h1> 
+  </div>
+  <div class="row text-center">
+  <h1 class="display-1" id="time"></h1>
+  </div>
+  <div class="row text-center">
+    <h1 class="display-6" id="date"></h1>
+  </div>
+</div>
+
+<hr>
+
+INSERT
+
+<hr>
+
+<img src="{% static 'mace.jpg' %}" class="rounded mx-auto d-block" alt="" height="200" style="transform:rotate(90deg);">
+
+<script>
+
+   
+
+    function startTime() {
+
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+    
+      const today = new Date();
+      let h = today.getHours();
+      let m = today.getMinutes();
+      m = checkTime(m);
+      document.getElementById('time').innerHTML =  h + ":" + m;
+
+      let date = today.getDate()
+      let month = today.getMonth()
+    
+
+
+
+      let year = today.getFullYear();
+      document.getElementById('date').innerHTML =  date + " " + monthNames[month] + " " + year
+
+      
+      setTimeout(startTime, 1000);
+    }
+    
+    function checkTime(i) {
+      if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+      return i;
+    }
+    </script>
+
 {% endblock %}
+

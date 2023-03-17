@@ -227,7 +227,14 @@ def bookmark(request, questionId):
 def notifyCheck(request):
 
     watchlistQuestions = Question.objects.filter(watchlistBy=request.user).values_list('uniqueId', flat=True)
-    print(watchlistQuestions)
+    
+    if not watchlistQuestions:
+        print("No questions on watchlist, aborting now...")
+
+        return JsonResponse({"message": "Question checked", "newNotification": False}, status=201)
+
+    
+    print("Questions on watchlist: ", watchlistQuestions)
 
     for question in watchlistQuestions:
         
@@ -257,11 +264,10 @@ def notifyCheck(request):
             user.watchlistQuestion.remove(question)
 
     notifications = Notification.objects.filter(is_read=False, user=request.user)
+    
     if notifications:
         newNotification = True
     else:
         newNotification = False
 
     return JsonResponse({"message": "Question checked", "newNotification": newNotification}, status=201)
-    
-    
