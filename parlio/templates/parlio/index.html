@@ -2,30 +2,60 @@
 {% load static %}
 {% block body %}
 
-<!-- TODO delete -->
-{{ message }}
+<!-- TODO delete 
+{{ message }} -->
 
 <body onload="startTime()">
+  <body onload="startTime()">
 
 <div class="container ">
-  <div class="row text-center">
-    <h1 class="display-6">Welcome, {{user}}!</h1> 
+  <div class="row text-center pt-4">
+  <h1 id="time"></h1>
   </div>
-  <div class="row text-center">
-  <h1 class="display-1" id="time"></h1>
-  </div>
-  <div class="row text-center">
-    <h1 class="display-6" id="date"></h1>
+  <div class="row text-center pb-5">
+    <h6 id="date"></h6>
   </div>
 </div>
 
-<hr>
 
-INSERT
 
-<hr>
+<div class="container px-4" align="center">
+  <div class="row gx-5">
+    <div class="col">
+      <div class="row">
+        <div class="p-5 bg-light">
+          <img class = "liveCommons" src="{% static 'portcullisIcon.svg' %}" height="100" width="100" style="background: #006548">
+        </div>
+      </div>
+      <div class="row">
+        <div class="p-1  bg-light"><h3>House of Commons<h3></div>
+      </div>
+      <div class="row">
+        <div class="p-1  bg-light pb-4"><h5>Sitting</h5></div>
+      </div>
+    </div>
+    <div class="col-1">
+    </div>
+    <div class="col">
+      <div class="row">
+        <div class="p-5 bg-light">
+          <img class = "liveLords" src="{% static 'portcullisIcon.svg' %}" height="100" width="100" style="background: #9D0830">
+        </div>
+      </div>
+      <div class="row">
+        <div class="p-1  bg-light "><h3>House of Lords<h3></div>
+      </div>
+      <div class="row">
+        <div class="p-1  bg-light pb-4"><h5>Not Sitting</h5></div>
+      </div>
+    </div>
+  </div>
+</div>
 
-<img src="{% static 'mace.jpg' %}" class="rounded mx-auto d-block" alt="" height="200" style="transform:rotate(90deg);">
+
+
+
+
 
 <script>
 

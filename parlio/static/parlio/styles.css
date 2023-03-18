@@ -1,7 +1,7 @@
-/* div {
+/*  div {
     outline: 1px solid red;
-} */
-
+} 
+ */
 @media (min-width: 768px) {
 	.navbar-brand.abs
 	{
@@ -28,6 +28,10 @@
 text-align: center;
 }
 
+/* Apply to portcullis icon only */
+img {
+  border-radius: 50%;
+}
 
 
 
@@ -98,4 +102,38 @@ input:checked + .slider:before {
 
 #questionTable {
   visibility: hidden;
+}
+
+.liveCommons{
+  height:100px;
+  width:100px;
+  display:block;
+  border-radius:50%;
+  animation:pulseCommons 2000ms infinite;
+}
+
+@keyframes pulseCommons{
+  0%{
+    box-shadow:#006548 0 0 0 0;
+  }
+  75%{
+    box-shadow:#ff69b400 0 0 0 16px;
+  }
+}
+
+.liveLords{
+  height:100px;
+  width:100px;
+  display:block;
+  border-radius:50%;
+  animation:pulseLords 2000ms infinite;
+}
+
+@keyframes pulseLords{
+  0%{
+    box-shadow:#9D0830 0 0 0 0;
+  }
+  75%{
+    box-shadow:#ff69b400 0 0 0 16px;
+  }
 }
