@@ -5,8 +5,9 @@
 <!-- TODO delete 
 {{ message }} -->
 
-<body onload="startTime()">
-  <body onload="startTime()">
+<body onload="startTime(),isSitting()">
+
+
 
 <div class="container ">
   <div class="row text-center pt-4">
@@ -19,34 +20,34 @@
 
 
 
-<div class="container px-4" align="center">
+<div class="container px-4 " align="center">
   <div class="row gx-5">
-    <div class="col">
+    <div class="col bg-light">
       <div class="row">
-        <div class="p-5 bg-light">
+        <div class="p-5">
           <img class = "liveCommons" src="{% static 'portcullisIcon.svg' %}" height="100" width="100" style="background: #006548">
         </div>
       </div>
       <div class="row">
-        <div class="p-1  bg-light"><h3>House of Commons<h3></div>
+        <div class="p-1"><h3>House of Commons<h3></div>
       </div>
       <div class="row">
-        <div class="p-1  bg-light pb-4"><h5>Sitting</h5></div>
+        <h5><div class="p-1  bg-light pb-4" id="commonsSitting"></div></h5>
       </div>
     </div>
     <div class="col-1">
     </div>
-    <div class="col">
+    <div class="col bg-light">
       <div class="row">
-        <div class="p-5 bg-light">
+        <div class="p-5">
           <img class = "liveLords" src="{% static 'portcullisIcon.svg' %}" height="100" width="100" style="background: #9D0830">
         </div>
       </div>
       <div class="row">
-        <div class="p-1  bg-light "><h3>House of Lords<h3></div>
+        <div class="p-1"><h3>House of Lords<h3></div>
       </div>
       <div class="row">
-        <div class="p-1  bg-light pb-4"><h5>Not Sitting</h5></div>
+        <h5><div class="p-1 pb-4" id="lordsSitting"></div></h5>
       </div>
     </div>
   </div>
@@ -59,6 +60,28 @@
 
 <script>
 
+    function isSitting() {
+
+      fetch('/isSitting')
+        .then((response) => response.json())
+        .then((result) => {
+          console.log(result.message)
+          
+          if (result['commonsSitting'] == false) {
+            document.getElementById('commonsSitting').innerHTML = "Not sitting"
+          }
+          else {
+            document.getElementById('commonsSitting').innerHTML = "Sitting"
+          }
+
+          if (result['lordsSitting'] == false) {
+            document.getElementById('lordsSitting').innerHTML = "Not sitting"
+          }
+          else {
+            document.getElementById('lordsSitting').innerHTML = "Sitting"
+          }
+      }); 
+    }
    
 
     function startTime() {

@@ -271,3 +271,43 @@ def notifyCheck(request):
         newNotification = False
 
     return JsonResponse({"message": "Question checked", "newNotification": newNotification}, status=201)
+
+
+def isSitting(request):
+
+    commonsUrl = "https://now-api.parliament.uk/api/Message/message/CommonsMain/current"
+    lordsUrl = "https://now-api.parliament.uk/api/Message/message/LordsMain/current"
+
+    response = requests.get(commonsUrl)
+    jsonResponse = response.json()
+    print(jsonResponse)
+
+    if jsonResponse['slides'][0]['type'] == 'BlankSlide':
+        commonsSitting = False
+        # print("The House of Commons is NOT sitting")
+
+    else:
+        commonsSitting = True
+        # print("The House of Commons is sitting")
+        
+
+    response = requests.get(lordsUrl)
+    jsonResponse = response.json()
+    print(jsonResponse)
+
+    if jsonResponse['slides'][0]['type'] == 'BlankSlide':
+        lordsSitting = False
+        # print("The House of Lords is NOT sitting")
+
+    else:
+        #print("The House of Lords is sitting")
+        lordsSitting = True
+
+    print("commonsSitting:", commonsSitting, "lordsSitting:", lordsSitting)
+
+    return JsonResponse({"message": "Sitting checked", "commonsSitting": commonsSitting, "lordsSitting": lordsSitting }, status=201)
+
+
+
+
+
