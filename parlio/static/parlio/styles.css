@@ -104,12 +104,13 @@ input:checked + .slider:before {
   visibility: hidden;
 }
 
-.liveCommons{
+#liveCommons{
   height:100px;
   width:100px;
   display:block;
   border-radius:50%;
   animation:pulseCommons 2000ms infinite;
+  animation-delay: 2s;
 }
 
 @keyframes pulseCommons{
@@ -121,12 +122,13 @@ input:checked + .slider:before {
   }
 }
 
-.liveLords{
+#liveLords{
   height:100px;
   width:100px;
   display:block;
   border-radius:50%;
   animation:pulseLords 2000ms infinite;
+  animation-delay: 2s;
 }
 
 @keyframes pulseLords{

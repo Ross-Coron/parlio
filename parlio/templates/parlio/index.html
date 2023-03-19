@@ -25,7 +25,7 @@
       <div class="col bg-light">
         <div class="row">
           <div class="p-5">
-            <img class="liveCommons" src="{% static 'portcullisIcon.svg' %}" height="100" width="100"
+            <img id="liveCommons" src="{% static 'portcullisIcon.svg' %}" height="100" width="100"
               style="background: #006548">
           </div>
         </div>
@@ -45,7 +45,7 @@
       <div class="col bg-light">
         <div class="row">
           <div class="p-5">
-            <img class="liveLords" src="{% static 'portcullisIcon.svg' %}" height="100" width="100"
+            <img id="liveLords" src="{% static 'portcullisIcon.svg' %}" height="100" width="100"
               style="background: #9D0830">
           </div>
         </div>
@@ -79,16 +79,22 @@
 
           if (result['commonsSitting'] == false) {
             document.getElementById('commonsSitting').innerHTML = "Not sitting"
+            document.getElementById('liveCommons').style.animationPlayState = 'initial'
+            document.getElementById('liveCommons').style.animationPlayState = 'paused'
           }
           else {
             document.getElementById('commonsSitting').innerHTML = "Sitting"
+            document.getElementById('liveCommons').style.animationPlayState = 'running'
           }
 
           if (result['lordsSitting'] == false) {
             document.getElementById('lordsSitting').innerHTML = "Not sitting"
+            document.getElementById('liveLords').style.animationPlayState = 'initial'
+            document.getElementById('liveLords').style.animationPlayState = 'paused'
           }
           else {
             document.getElementById('lordsSitting').innerHTML = "Sitting"
+            document.getElementById('liveLords').style.animationPlayState = 'running'
           }
         });
     
