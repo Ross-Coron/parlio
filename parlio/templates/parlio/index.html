@@ -9,56 +9,66 @@
 
 
 
-<div class="container ">
-  <div class="row text-center pt-4">
-  <h1 id="time"></h1>
+  <div class="container ">
+    <div class="row text-center pt-4">
+      <h1 id="time"></h1>
+    </div>
+    <div class="row text-center pb-5">
+      <h6 id="date"></h6>
+    </div>
   </div>
-  <div class="row text-center pb-5">
-    <h6 id="date"></h6>
-  </div>
-</div>
 
 
 
-<div class="container px-4 " align="center">
-  <div class="row gx-5">
-    <div class="col bg-light">
-      <div class="row">
-        <div class="p-5">
-          <img class = "liveCommons" src="{% static 'portcullisIcon.svg' %}" height="100" width="100" style="background: #006548">
+  <div class="container px-4 " align="center">
+    <div class="row gx-5">
+      <div class="col bg-light">
+        <div class="row">
+          <div class="p-5">
+            <img class="liveCommons" src="{% static 'portcullisIcon.svg' %}" height="100" width="100"
+              style="background: #006548">
+          </div>
+        </div>
+        <div class="row">
+          <div class="p-1">
+            <h3>House of Commons<h3>
+          </div>
+        </div>
+        <div class="row">
+          <h5>
+            <div class="p-1  bg-light pb-4" id="commonsSitting"></div>
+          </h5>
         </div>
       </div>
-      <div class="row">
-        <div class="p-1"><h3>House of Commons<h3></div>
+      <div class="col-1">
       </div>
-      <div class="row">
-        <h5><div class="p-1  bg-light pb-4" id="commonsSitting"></div></h5>
-      </div>
-    </div>
-    <div class="col-1">
-    </div>
-    <div class="col bg-light">
-      <div class="row">
-        <div class="p-5">
-          <img class = "liveLords" src="{% static 'portcullisIcon.svg' %}" height="100" width="100" style="background: #9D0830">
+      <div class="col bg-light">
+        <div class="row">
+          <div class="p-5">
+            <img class="liveLords" src="{% static 'portcullisIcon.svg' %}" height="100" width="100"
+              style="background: #9D0830">
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="p-1"><h3>House of Lords<h3></div>
-      </div>
-      <div class="row">
-        <h5><div class="p-1 pb-4" id="lordsSitting"></div></h5>
+        <div class="row">
+          <div class="p-1">
+            <h3>House of Lords<h3>
+          </div>
+        </div>
+        <div class="row">
+          <h5>
+            <div class="p-1 pb-4" id="lordsSitting"></div>
+          </h5>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 
 
 
 
 
-<script>
+  <script>
 
     function isSitting() {
 
@@ -66,7 +76,7 @@
         .then((response) => response.json())
         .then((result) => {
           console.log(result.message)
-          
+
           if (result['commonsSitting'] == false) {
             document.getElementById('commonsSitting').innerHTML = "Not sitting"
           }
@@ -80,40 +90,41 @@
           else {
             document.getElementById('lordsSitting').innerHTML = "Sitting"
           }
-      }); 
+        });
+    
+    setTimeout(isSitting, 60000)
     }
-   
+
 
     function startTime() {
 
-        const monthNames = ["January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
-];
-    
+      const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+
       const today = new Date();
       let h = today.getHours();
       let m = today.getMinutes();
       m = checkTime(m);
-      document.getElementById('time').innerHTML =  h + ":" + m;
+      document.getElementById('time').innerHTML = h + ":" + m;
 
       let date = today.getDate()
       let month = today.getMonth()
-    
+
 
 
 
       let year = today.getFullYear();
-      document.getElementById('date').innerHTML =  date + " " + monthNames[month] + " " + year
+      document.getElementById('date').innerHTML = date + " " + monthNames[month] + " " + year
 
-      
+
       setTimeout(startTime, 1000);
     }
-    
+
     function checkTime(i) {
-      if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+      if (i < 10) { i = "0" + i };  // add zero in front of numbers < 10
       return i;
     }
-    </script>
+  </script>
 
-{% endblock %}
-
+  {% endblock %}
