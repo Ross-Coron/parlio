@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.db import IntegrityError
@@ -44,7 +45,7 @@ def login_view(request):
 
 
 # Log user out
-# TODO @login_required(redirect_field_name='my_redirect_field')
+@login_required(redirect_field_name='my_redirect_field')   # Redirect to login. Route saved in settings.py
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
@@ -78,12 +79,13 @@ def register(request):
         return render(request, "parlio/register.html")
 
 # Test route for fetch functionality
+@login_required(redirect_field_name='my_redirect_field') 
 def fetch(request):
     return render(request, "parlio/fetch.html")
 
 
 
-
+@login_required(redirect_field_name='my_redirect_field') 
 def question(request):
 
     if request.method == "GET":
@@ -166,7 +168,7 @@ def question(request):
 
 
 
-
+@login_required(redirect_field_name='my_redirect_field') 
 def onWatchlist(request, questionId):
         
     # Check if user has question on watchlist
@@ -187,7 +189,7 @@ def onWatchlist(request, questionId):
 
 
 
-
+@login_required(redirect_field_name='my_redirect_field') 
 def notifyMe(request, questionId):
 
     # Check if user has question on watchlist
@@ -215,7 +217,7 @@ def notifyMe(request, questionId):
 
     return JsonResponse({"message": message}, status=201)
 
-
+@login_required(redirect_field_name='my_redirect_field') 
 def bookmark(request, questionId):
     print("You are here: ", questionId)
     pass
@@ -224,6 +226,7 @@ def bookmark(request, questionId):
 
 
 # Check if watchlist question answered. If so, remove from watchlist and create notification
+@login_required(redirect_field_name='my_redirect_field') 
 def notifyCheck(request):
 
     watchlistQuestions = Question.objects.filter(watchlistBy=request.user).values_list('uniqueId', flat=True)
@@ -273,6 +276,7 @@ def notifyCheck(request):
     return JsonResponse({"message": "Question checked", "newNotification": newNotification}, status=201)
 
 
+@login_required(redirect_field_name='my_redirect_field') 
 def isSitting(request):
 
     commonsUrl = "https://now-api.parliament.uk/api/Message/message/CommonsMain/current"
