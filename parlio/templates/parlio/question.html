@@ -34,13 +34,15 @@
           {% for result in results %}
           <tr>
             {% for key, value in result.items %}
-            
+
             <td class="align-middle">
               {% if value == "Awaiting answer" %} <i>Pending...</i>
 
               <!-- I am here <a href="{% url 'bookmark' questionId=result.id  %}" -->
-              {% elif value is False %} <a id="bookmark_{{result.id}}" href="#" onclick="bookmark({{result.id}});" style="text-decoration:none; color: black";>&#9734</a>
-              {% elif value is True %} <a id="bookmark_{{result.id}}" href="#" onclick="bookmark({{result.id}});" style="text-decoration:none; color: black";>&#9733</a>
+              {% elif value is False %} <a id="bookmark_{{result.id}}" href="#" onclick="bookmark({{result.id}});"
+                style="text-decoration:none; color: black" ;>&#9734</a>
+              {% elif value is True %} <a id="bookmark_{{result.id}}" href="#" onclick="bookmark({{result.id}});"
+                style="text-decoration:none; color: black" ;>&#9733</a>
               {% else %} {{value}} {% endif %}
             </td>
             {% endfor %}
@@ -57,31 +59,24 @@
       <p><b>Asked by: </b><span id="askedBy"></span></p>
       <span><b>Asked on: </b><span id="askedOn"></span></p>
 
-      <hr>
+        <hr>
+
+        <div id="answeredQuestion">
+          <p><b>Answered by: </b><span id="answeredBy"></span></p>
+          <span><b>Answered on: </b><span id="date"></span></p>
+            <span><b>Answer: </b></span><span id="answer"></span>
+        </div>
+
+        <div id="unansweredQuestion">
+          <p><b>Answering body: </b><span id="answeringBody"></span></p>
+          <span><b>Due for answer on: </b><span id="dueAnswer"></span></p>
+            <div class="form-check text-right">
+              <input class="form-check-input" type="checkbox" value="" id="watchQuestion" data-id="">
+              <label class="form-check-label" for="flexCheckDefault">Notify me</label>
+            </div>
+        </div>
+    </div>
     
-    <div id="answeredQuestion">
-      <p><b>Answered by: </b><span id="answeredBy"></span></p>
-      <span><b>Answered on: </b><span id="date"></span></p>
-      <span><b>Answer: </b></span><span id="answer"></span>
-    </div>
-
-    <div id="unansweredQuestion">
-      <p><b>Answering body: </b><span id="answeringBody"></span></p>
-      <span><b>Due for answer on: </b><span id="dueAnswer"></span></p>
-      <div class="form-check text-right">
-        <input class="form-check-input" type="checkbox" value="" id="watchQuestion" data-id="">
-        <label class="form-check-label" for="flexCheckDefault">
-        Notify me
-    </div>
-    </div>
-
-
-
-      
-
-    </div>
-    </label>
-
     {% else %}
     {{status}}
     {% endif %}

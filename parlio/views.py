@@ -14,8 +14,46 @@ from django.http import JsonResponse
 # Create your views here.
 
 def index(request):
-    return render(request, "parlio/index.html", {
-            "message": "Hello, World!"
+    return render(request, "parlio/index.html")
+
+
+def profile(request, profile):
+
+    print(profile)
+
+    # Get notifications
+    notifications = Notification.objects.filter(user=request.user).values_list('question', flat=True)
+
+    questions = []
+
+    for notification in notifications:
+        question = Question.objects.filter(pk=notification).values_list('uniqueId', flat=True).first()
+        questions.append(question)
+
+    foo = []
+    num = 0
+
+    for question in questions:
+        url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions/" + str(question)
+
+        print(url)
+
+        response = requests.get(url)
+        jsonResponse = response.json()
+        questions = jsonResponse
+        print(questions['value']['id'])
+
+        bar = {"id": num, "uIn": questions['value']['uin'], "answeredOn": questions['value']['dateAnswered'],"questionText":questions['value']['questionText'],  "answerText":questions['value']['answerText']   }
+        foo.append(bar)
+
+
+        print(bar)
+        num = num + 1
+    
+    print(foo)
+
+    return render(request, "parlio/user.html", {
+            "notifications": foo,
         })
 
 
@@ -276,7 +314,6 @@ def notifyCheck(request):
     return JsonResponse({"message": "Question checked", "newNotification": newNotification}, status=201)
 
 
-@login_required(redirect_field_name='my_redirect_field') 
 def isSitting(request):
 
     commonsUrl = "https://now-api.parliament.uk/api/Message/message/CommonsMain/current"

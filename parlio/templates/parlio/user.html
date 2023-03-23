@@ -1,0 +1,79 @@
+{% extends "parlio/layout.html" %}
+
+{% block body %}
+
+<div class="container ">
+
+
+
+{{message}} {{user}}! <br><br>
+
+{% for item in notifications %}
+    {{ item }}<br><br>
+{% endfor%}
+
+
+
+
+<hr>
+
+{% for item in notifications %}
+<div class="accordion" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingOne">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{item.id}}" aria-expanded="true" aria-controls="collapse{{item.id}}">
+        Question {{item.uIn}} was answered on {{item.answeredOn}}.
+      </button>
+    </h2>
+    <div id="collapse{{item.id}}" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+          {{item.answerText|safe}}
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+
+{% endblock %}
+
+</div>
+
+
+{% comment %} <br>
+{% for item in json.items %}
+ {{item}}
+ <br><br>
+{%endfor%}
+
+<br>
+
+{% for item in bwa.items %}
+    {{ item}}<br>
+{% endfor%}
+
+<div class="alert alert-primary" role="alert">
+    This is a primary alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you like.<button type="button" class="btn btn-primary">Primary</button>
+  </div>
+
+{% for item in json.items %}
+     
+
+
+<div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Notification!
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+            {{item.1.questionText}}
+            <br><br>
+            {{item.1.answerText|safe}}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %} {% endcomment %}

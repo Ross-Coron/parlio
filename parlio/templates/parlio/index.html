@@ -2,12 +2,7 @@
 {% load static %}
 {% block body %}
 
-<!-- TODO delete 
-{{ message }} -->
-
 <body onload="startTime(),isSitting()">
-
-
 
   <div class="container ">
     <div class="row text-center pt-4">
@@ -17,8 +12,6 @@
       <h6 id="date"></h6>
     </div>
   </div>
-
-
 
   <div class="container px-4 " align="center">
     <div class="row gx-5">
@@ -63,15 +56,6 @@
     </div>
   </div>
 
-
-
-
-
-
-
-
-    <script src="{% static 'parlio/index.js' %}"></script>
-
-
+  <script src="{% static 'parlio/index.js' %}"></script>
 
   {% endblock %}
