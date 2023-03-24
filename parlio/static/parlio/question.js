@@ -10,7 +10,7 @@ const dueAnswer = document.getElementById('dueAnswer')
 const notifyMe = document.getElementById('watchQuestion')
 
 notifyCheck()
-setInterval(notifyCheck, 300000)
+setInterval(notifyCheck, 6000)
 
 
 async function viewQuestion(id, bookmarked) {
@@ -85,8 +85,9 @@ async function notifyCheck() {
             
             console.log(result)
             
-            if (result.newNotification == true){
-                alert("New Notifications!")
+            // If notifications, append user in NavBar with number
+            if (result.notifications >= 1){
+                document.getElementById('notifications').innerHTML = result.notifications
             }
 
         });
