@@ -43,7 +43,7 @@ def profile(request, profile):
         questions = jsonResponse
         print(questions['value']['id'])
 
-        bar = {"id": num, "uIn": questions['value']['uin'], "answeredOn": questions['value']['dateAnswered'],"questionText":questions['value']['questionText'],  "answerText":questions['value']['answerText']   }
+        bar = {"id": num, "uIn": questions['value']['uin'], "heading": questions['value']['heading'], "answeredOn": questions['value']['dateAnswered'][0:10], "questionText":questions['value']['questionText'],  "answerText":questions['value']['answerText']   }
         foo.append(bar)
 
 

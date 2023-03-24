@@ -2,37 +2,34 @@
 
 {% block body %}
 
-<div class="container ">
+<div class="container">
+  
 
-
-
-{{message}} {{user}}! <br><br>
-
-{% for item in notifications %}
-    {{ item }}<br><br>
-{% endfor%}
-
-
-
-
-<hr>
+  <h4>Notifications</h4>
 
 {% for item in notifications %}
 <div class="accordion" id="accordionExample">
   <div class="accordion-item">
-    <h2 class="accordion-header" id="headingOne">
+    <h2 class="accordion-header" id="heading{{item.id}}">
       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{item.id}}" aria-expanded="true" aria-controls="collapse{{item.id}}">
-        Question {{item.uIn}} was answered on {{item.answeredOn}}.
+        Question {{item.uIn}} ('{{item.heading}}') was answered on {{item.answeredOn}}
       </button>
     </h2>
-    <div id="collapse{{item.id}}" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+    <div id="collapse{{item.id}}" style="padding-bottom: 2rem;" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
       <div class="accordion-body">
           {{item.answerText|safe}}
+          <button type="button" class="btn btn-danger float-end">Dismiss</button>
       </div>
     </div>
   </div>
 </div>
 {% endfor %}
+
+<hr>
+  <h4>Bookmarked Questions<h4>
+
+
+
 
 
 {% endblock %}
