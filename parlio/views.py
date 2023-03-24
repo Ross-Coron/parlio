@@ -11,17 +11,17 @@ import requests
 import json
 from django.http import JsonResponse
 
-# Create your views here.
-
+# Default route
 def index(request):
     return render(request, "parlio/index.html")
 
-
+# View user's notifications and bookmarked questions
 def profile(request, profile):
 
+    # DEBUG
     print(profile)
 
-    # Get notifications
+    # Get question IDs corresponding to notifications
     notifications = Notification.objects.filter(user=request.user).values_list('question', flat=True)
 
     questions = []
@@ -33,10 +33,9 @@ def profile(request, profile):
     foo = []
     num = 0
 
+    # For each question, create a dictionary (id, question, etc) then add to list
     for question in questions:
         url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions/" + str(question)
-
-        print(url)
 
         response = requests.get(url)
         jsonResponse = response.json()
@@ -45,7 +44,6 @@ def profile(request, profile):
 
         bar = {"id": num, "uIn": questions['value']['uin'], "heading": questions['value']['heading'], "answeredOn": questions['value']['dateAnswered'][0:10], "questionText":questions['value']['questionText'],  "answerText":questions['value']['answerText']   }
         foo.append(bar)
-
 
         print(bar)
         num = num + 1
@@ -116,10 +114,11 @@ def register(request):
     else:
         return render(request, "parlio/register.html")
 
-# Test route for fetch functionality
-@login_required(redirect_field_name='my_redirect_field') 
-def fetch(request):
-    return render(request, "parlio/fetch.html")
+
+# # Test route for fetch functionality
+# @login_required(redirect_field_name='my_redirect_field') 
+# def fetch(request):
+#     return render(request, "parlio/fetch.html")
 
 
 
@@ -348,8 +347,3 @@ def isSitting(request):
     print("commonsSitting:", commonsSitting, "lordsSitting:", lordsSitting)
 
     return JsonResponse({"message": "Sitting checked", "commonsSitting": commonsSitting, "lordsSitting": lordsSitting }, status=201)
-
-
-
-
-
