@@ -50,8 +50,14 @@ def profile(request, profile):
     
     print(foo)
 
+
+    # Get bookmarked questions
+    bookmarkedQuestions = Question.objects.filter(bookmarkBy=request.user).values_list('uniqueId', flat=True)
+    print(bookmarkedQuestions)
+
     return render(request, "parlio/user.html", {
             "notifications": foo,
+            "bookmarks": bookmarkedQuestions
         })
 
 
