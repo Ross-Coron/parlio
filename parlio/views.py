@@ -55,9 +55,24 @@ def profile(request, profile):
     bookmarkedQuestions = Question.objects.filter(bookmarkBy=request.user).values_list('uniqueId', flat=True)
     print(bookmarkedQuestions)
 
+    bookmarked = []
+
+    for bookmarkedQuestion in bookmarkedQuestions:
+        url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions/" + str(bookmarkedQuestion)
+        print(url)
+        response = requests.get(url)
+        jsonResponse = response.json()
+        questions = jsonResponse
+        print(questions['value']['id'])
+        print(questions['value']['uin'])
+        print(questions['value']['heading'])
+        
+        item = {"id": questions['value']['id'], "uin": questions['value']['uin'], "heading":questions['value']['heading']}
+        bookmarked.append(item)
+
     return render(request, "parlio/user.html", {
             "notifications": foo,
-            "bookmarks": bookmarkedQuestions
+            "bookmarks": bookmarked
         })
 
 
