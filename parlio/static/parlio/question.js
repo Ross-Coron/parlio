@@ -70,8 +70,18 @@ function bookmark(questionId) {
     fetch(`/bookmark/${questionId}`)
         .then((response) => response.json())
         .then((result) => {
-            alert(result.message)
-            alert("FOO")
+            
+            if (result.star == true) {
+                document.getElementById(`bookmark_${questionId}`).innerHTML = '&#9733'
+            }
+
+            else {
+                document.getElementById(`bookmark_${questionId}`).innerHTML = '&#9734'
+            }
+            
+            
+
+
         });
     // star to unstar and vice versa
 }

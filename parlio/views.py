@@ -278,13 +278,23 @@ def notifyMe(request, questionId):
 
 @login_required(redirect_field_name='my_redirect_field') 
 def bookmark(request, questionId):
+    
+    if request.user.bookmarkQuestion.filter(uniqueId=questionId).exists():
+        
+        bookmarkedQuestion = Question.objects.get(uniqueId=questionId)
+        request.user.bookmarkQuestion.remove(bookmarkedQuestion)
+        
+        return JsonResponse({"message": "Question removed from bookmarks", "star": False}, status=201)
 
-    bookmarkedQuestion = Question.objects.get(uniqueId=questionId)
-    request.user.bookmarkQuestion.remove(bookmarkedQuestion)
-    return JsonResponse({"message": "Question removed from bookmarks"}, status=201)
+    else:
 
+        newBookmark = Question(uniqueId=questionId)
+        newBookmark.save()
 
+        request.user.bookmarkQuestion.add(newBookmark)
 
+        return JsonResponse({"message": "New question added from bookmarks", "star": True}, status=201)
+   
 
 # Check if watchlist question answered. If so, remove from watchlist and create notification
 @login_required(redirect_field_name='my_redirect_field') 
