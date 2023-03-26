@@ -275,10 +275,13 @@ def notifyMe(request, questionId):
 
     return JsonResponse({"message": message}, status=201)
 
+
 @login_required(redirect_field_name='my_redirect_field') 
 def bookmark(request, questionId):
-    print("You are here: ", questionId)
-    pass
+
+    bookmarkedQuestion = Question.objects.get(uniqueId=questionId)
+    request.user.bookmarkQuestion.remove(bookmarkedQuestion)
+    return JsonResponse({"message": "Question removed from bookmarks"}, status=201)
 
 
 

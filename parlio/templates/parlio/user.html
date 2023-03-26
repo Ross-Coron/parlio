@@ -56,7 +56,12 @@
 
           console.log(element.id)
 
-          // API to remove
+          fetch(`/bookmark/${element.id}`)
+          .then((response) => response.json())
+          .then((result) => {
+              
+              console.log(result)
+          })
 
           element.parentElement.style.animationPlayState = 'running';
           element.parentElement.addEventListener('animationend', () => {
