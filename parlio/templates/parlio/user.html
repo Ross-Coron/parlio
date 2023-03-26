@@ -4,6 +4,7 @@
 {% block body %}
 
 
+
 <div class="container">
   
 
@@ -35,9 +36,9 @@
 
   <h4>Bookmarked Questions</h4>
   {% for bookmark in bookmarks %}
-   <div class="alert alert-custom border" role="alert">
+   <div class="alert alert-custom border bookmarkQuestion" role="alert">
   UIN{{bookmark.uin}} ({{bookmark.heading}})
-  <button type="button" class="btn btn-danger float-end ml-2 gwa" style="position: relative; top: -6px;">Remove</button>
+  <button type="button" id={{bookmark.id}} class="btn btn-danger float-end ml-2 removeBookmark" style="position: relative; top: -6px;">Remove</button>
   <a class="btn btn-primary float-end "  style="position: relative; top: -6px;"href="https://questions-statements.parliament.uk/written-questions?SearchTerm={{bookmark.uin}}" target="_blank" rel="noopener noreferrer" role="button">View</a>
 
 </div>
@@ -47,20 +48,30 @@
 
   document.addEventListener("click", myFunction);
   
+
   function myFunction() {
 
     const element = event.target;
-    if (element.classList.contains('gwa')) {
+    if (element.classList.contains('removeBookmark')) {
 
-    alert("Hello! I am an alert box!!");
-    
-    element.parentElement.remove()
-  }
-  }
+          console.log(element.id)
+
+          // API to remove
+
+          element.parentElement.style.animationPlayState = 'running';
+          element.parentElement.addEventListener('animationend', () => {
+          element.parentElement.remove(); 
+          });
+    }
+   
+  };
+  
   
   
   
     </script>
+
+
 
 {% endfor %}
 {% endblock %}
