@@ -3,12 +3,9 @@
 {% load static %}
 {% block body %}
 
-
-
 <div class="container">
   
-
-  <h4>Notifications</h4>
+<h4>Notifications:</h4>
 
 {% for item in notifications %}
 <div class="accordion mb-3" id="accordionExample">
@@ -33,23 +30,22 @@
 <br>
 <hr>
 
-
-  <h4>Bookmarked Questions</h4>
+  <h4>Bookmarked Questions:</h4>
   {% for bookmark in bookmarks %}
    <div class="alert alert-custom border bookmarkQuestion" role="alert">
   UIN{{bookmark.uin}} ({{bookmark.heading}})
   <button type="button" id={{bookmark.id}} class="btn btn-danger float-end ml-2 removeBookmark" style="position: relative; top: -6px;">Remove</button>
   <a class="btn btn-primary float-end "  style="position: relative; top: -6px;"href="https://questions-statements.parliament.uk/written-questions?SearchTerm={{bookmark.uin}}" target="_blank" rel="noopener noreferrer" role="button">View</a>
-
 </div>
 
-
+<script src="{% static 'parlio/js/background.js' %}"></script>
 <script>
 
-  document.addEventListener("click", myFunction);
-  
+  notifyCheck()
+  setInterval(notifyCheck, 30000)
 
-  function myFunction() {
+  document.addEventListener("click", removeBookmark);
+  function removeBookmark() {
 
     const element = event.target;
     if (element.classList.contains('removeBookmark')) {
@@ -59,8 +55,6 @@
           fetch(`/bookmark/${element.id}`)
           .then((response) => response.json())
           .then((result) => {
-              
-              console.log(result)
           })
 
           element.parentElement.style.animationPlayState = 'running';
@@ -70,16 +64,7 @@
     }
    
   };
-  
-  
-  
-  
-    </script>
-
-
+</script>
 
 {% endfor %}
 {% endblock %}
-
-
-
