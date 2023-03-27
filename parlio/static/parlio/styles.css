@@ -1,17 +1,13 @@
-/*  div {
-    outline: 1px solid red;
-} 
- */
+
 @media (min-width: 768px) {
-	.navbar-brand.abs
-	{
-		position: absolute;
-		width: auto;
-		left: 50%;
-		transform: translateX(-50%);
-		text-align: center;
-		padding-top: 10px;
-	}
+  .navbar-brand.abs {
+    position: absolute;
+    width: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    padding-top: 10px;
+  }
 }
 
 /* Makes profile image circular */
@@ -25,7 +21,7 @@
 
 
 .foo {
-text-align: center;
+  text-align: center;
 }
 
 /* Apply to portcullis icon only */
@@ -34,124 +30,63 @@ img {
 }
 
 
-
-
-
-/* The switch - the box around the slider */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
-
-/* Hide default HTML checkbox */
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-/* The slider */
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #006e46;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-input:checked + .slider {
-  background-color: #b50938;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #b50938;
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
-
 #questionTable {
   visibility: hidden;
 }
 
-#liveCommons{
-  height:100px;
-  width:100px;
-  display:block;
-  border-radius:50%;
-  animation:pulseCommons 2000ms infinite;
+
+/* Pulse effect around HoC and HoL icons on index page */
+#liveCommons {
+  height: 100px;
+  width: 100px;
+  display: block;
+  border-radius: 50%;
+  animation: pulseCommons 2000ms infinite;
   animation-delay: 2s;
 }
 
-@keyframes pulseCommons{
-  0%{
-    box-shadow:#006548 0 0 0 0;
+@keyframes pulseCommons {
+  0% {
+    box-shadow: #006548 0 0 0 0;
   }
-  75%{
-    box-shadow:#ff69b400 0 0 0 16px;
+
+  75% {
+    box-shadow: #ff69b400 0 0 0 16px;
   }
 }
 
-#liveLords{
-  height:100px;
-  width:100px;
-  display:block;
-  border-radius:50%;
-  animation:pulseLords 2000ms infinite;
+#liveLords {
+  height: 100px;
+  width: 100px;
+  display: block;
+  border-radius: 50%;
+  animation: pulseLords 2000ms infinite;
   animation-delay: 2s;
 }
 
-@keyframes pulseLords{
-  0%{
-    box-shadow:#9D0830 0 0 0 0;
+@keyframes pulseLords {
+  0% {
+    box-shadow: #9D0830 0 0 0 0;
   }
-  75%{
-    box-shadow:#ff69b400 0 0 0 16px;
+
+  75% {
+    box-shadow: #ff69b400 0 0 0 16px;
   }
 }
 
 
 
-.alert-custom{
-  background-color:#e7f1ff;
-  color:#0c63e4;
-  box-shadow: inset 0 -1px 0 rgba(0,0,0,.125);
+.alert-custom {
+  background-color: #e7f1ff;
+  color: #0c63e4;
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .125);
   border: 1px
 }
 
 
 
 
+/* Removes bookmarked question from user's profile page */
 @keyframes hide {
   0% {
     opacity: 1;
@@ -162,14 +97,9 @@ input:checked + .slider:before {
   }
 }
 
-.bookmarkQuestion{
+.bookmarkQuestion {
   animation-name: hide;
   animation-duration: 2s;
   animation-fill-mode: forwards;
   animation-play-state: paused;
 }
-
-
-
-
-

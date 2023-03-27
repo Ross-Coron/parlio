@@ -53,14 +53,12 @@ async function viewQuestion(id, bookmarked) {
     document.getElementById('watchQuestion').dataset.id = id
 };
 
-
+// Add / remove question from user's watchlist
 function watchQuestion() {
-    alert(this.dataset.id)
     id = this.dataset.id
-
     fetch(`/notifyMe/${id}`)
         .then((response) => response.json())
-        .then((result) => alert(result.message));
+        .then((result) => console.log(result.message));
 }
 
 function bookmark(questionId) {

@@ -136,13 +136,6 @@ def register(request):
         return render(request, "parlio/register.html")
 
 
-# # Test route for fetch functionality
-# @login_required(redirect_field_name='my_redirect_field') 
-# def fetch(request):
-#     return render(request, "parlio/fetch.html")
-
-
-
 @login_required(redirect_field_name='my_redirect_field') 
 def question(request):
 
@@ -168,12 +161,7 @@ def question(request):
 
         # Check if user has question bookmarked
         bookmarkedQuestions = Question.objects.filter(bookmarkBy=request.user).values_list('uniqueId', flat=True)
-        #print("Bookmarked questions:", bookmarkedQuestions)
 
-        # Check if user has question on watchlist
-        #watchlistQuestions = Question.objects.filter(watchlistBy=request.user).values_list('uniqueId', flat=True)
-        #print("Watchlisted questions:", watchlistQuestions)
- 
         for question in questions:
             
             entry = {}
@@ -185,13 +173,6 @@ def question(request):
             else:
                 print("It's not a match")
                 isBookmarked = False
-
-            #if questionID in watchlistQuestions:
-            #    print("It's a match!")
-            #    isWatchlisted = True
-            #else:
-            #    print("It's not a match")
-            #    isWatchlisted = False
 
             questionSubject = question['value']['heading']
             
@@ -254,17 +235,20 @@ def notifyMe(request, questionId):
     watchlistQuestions = Question.objects.filter(watchlistBy=request.user).values_list('uniqueId', flat=True)
 
     # Debug
-    print(watchlistQuestions)
+    print("Questions on watchlist: ", watchlistQuestions)
     
+    # Get user
     user = User.objects.filter(id=request.user.id).first()
-        
+
+    # If question already on watchlist, removed
     if questionId in watchlistQuestions:
         
         question = Question.objects.filter(uniqueId=questionId).first()
-        
         user.watchlistQuestion.remove(question)
+        
         message = "Question removed from your watchlist"
 
+    # If question not on watchlist, add
     else:
         
         question = Question(uniqueId=questionId)
@@ -302,12 +286,6 @@ def notifyCheck(request):
 
     watchlistQuestions = Question.objects.filter(watchlistBy=request.user).values_list('uniqueId', flat=True)
     
-    #if not watchlistQuestions:
-    #    print("No questions on watchlist, aborting now...")
-
-    #    return JsonResponse({"message": "Question checked", "newNotification": False}, status=201)
-
-    
     print("Questions on watchlist: ", watchlistQuestions)
 
     for question in watchlistQuestions:
@@ -340,44 +318,40 @@ def notifyCheck(request):
     notifications = Notification.objects.filter(is_read=False, user=request.user).count()
     print(notifications)
     
-    # if notifications:
-    #     newNotification = True
-    # else:
-    #     newNotification = False
-
     return JsonResponse({"message": "Question checked", "notifications": notifications}, status=201)
 
 
+# Check if Commons or Lords are sitting
 def isSitting(request):
 
+    # Commons API route
     commonsUrl = "https://now-api.parliament.uk/api/Message/message/CommonsMain/current"
-    lordsUrl = "https://now-api.parliament.uk/api/Message/message/LordsMain/current"
-
     response = requests.get(commonsUrl)
     jsonResponse = response.json()
-    print(jsonResponse)
+    print("Debug: Commons annunciator route: ", jsonResponse)
 
+    # If Commons not sitting or sitting
     if jsonResponse['slides'][0]['type'] == 'BlankSlide':
         commonsSitting = False
-        # print("The House of Commons is NOT sitting")
+        print("Debug: the House of Commons is NOT sitting")
 
     else:
         commonsSitting = True
-        # print("The House of Commons is sitting")
-        
+        print("Debug: the House of Commons is sitting")
 
+    # Lords API route 
+    lordsUrl = "https://now-api.parliament.uk/api/Message/message/LordsMain/current"
     response = requests.get(lordsUrl)
     jsonResponse = response.json()
-    print(jsonResponse)
+    print("Debug: Lords annunciator route: ", jsonResponse)
 
+    # If Commons not sitting or sitting
     if jsonResponse['slides'][0]['type'] == 'BlankSlide':
         lordsSitting = False
-        # print("The House of Lords is NOT sitting")
+        print("Debug: the House of Lords is NOT sitting")
 
     else:
-        #print("The House of Lords is sitting")
         lordsSitting = True
-
-    print("commonsSitting:", commonsSitting, "lordsSitting:", lordsSitting)
+        print("Debug: the House of Lords is sitting")
 
     return JsonResponse({"message": "Sitting checked", "commonsSitting": commonsSitting, "lordsSitting": lordsSitting }, status=201)
