@@ -10,7 +10,7 @@ const dueAnswer = document.getElementById('dueAnswer')
 const notifyMe = document.getElementById('watchQuestion')
 
 notifyCheck()
-setInterval(notifyCheck, 30000)
+setInterval(notifyCheck, 300000)
 
 
 async function viewQuestion(id, bookmarked) {

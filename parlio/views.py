@@ -5,21 +5,27 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.db import IntegrityError
-
+from django.http import JsonResponse
 from .models import *
 import requests
 import json
-from django.http import JsonResponse
 
-# Default route
+
+# Visible routes:
+
+# Default, index route. Shows whether the House of Commons and/or Lords are sitting.
 def index(request):
     return render(request, "parlio/index.html")
 
-# View user's notifications and bookmarked questions
-def profile(request, profile):
 
-    # DEBUG
-    print(profile)
+# In-progress annunciator page
+def annunciator(request):
+    return render(request, "parlio/annunciator.html")
+
+
+# View user's notifications and bookmarked questions
+@login_required(redirect_field_name='my_redirect_field')
+def profile(request, profile):
 
     # Get question IDs corresponding to notifications
     notifications = Notification.objects.filter(user=request.user).values_list('question', flat=True)
@@ -50,7 +56,6 @@ def profile(request, profile):
     
     print(foo)
 
-
     # Get bookmarked questions
     bookmarkedQuestions = Question.objects.filter(bookmarkBy=request.user).values_list('uniqueId', flat=True)
     print(bookmarkedQuestions)
@@ -76,9 +81,74 @@ def profile(request, profile):
         })
 
 
-def annunciator(request):
-    return render(request, "parlio/annunciator.html")
+# Search, view, and bookmark PQs
+@login_required(redirect_field_name='my_redirect_field') 
+def question(request):
 
+    if request.method == "GET":
+        return render(request, "parlio/question.html")
+
+    # Check if method is POST
+    elif request.method == "POST":
+
+        # Take in the data the user submitted and save it as form
+        questionId = request.POST["questionId"]
+
+        #print(questionId)
+
+        url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions?uIN=" + questionId
+        #print(url)
+
+        results = []
+
+        response = requests.get(url)
+        jsonResponse = response.json()
+        questions = jsonResponse["results"]
+
+        # Check if user has question bookmarked
+        bookmarkedQuestions = Question.objects.filter(bookmarkBy=request.user).values_list('uniqueId', flat=True)
+
+        for question in questions:
+            
+            entry = {}
+
+            questionID = int(question['value']['id'])
+            if questionID in bookmarkedQuestions:
+                print("It's a match!")
+                isBookmarked = True
+            else:
+                print("It's not a match")
+                isBookmarked = False
+
+            questionSubject = question['value']['heading']
+            
+            try:
+                questionAnswered = question['value']['dateAnswered'][0:10]
+            except:
+                questionAnswered = "Awaiting answer"
+            
+            entry.update({'id':questionID, 'subject':questionSubject, 'answered':questionAnswered, 'bookmarked': isBookmarked})
+            results.append(entry)
+            
+            print(results)
+
+        if not results:
+            status = "No questions found!"
+        else:
+            status = ""
+  
+        return render(request, "parlio/question.html", {
+                "results": results, 
+                "questionId": questionId,
+                "status": status
+            })
+
+    else:
+
+        return render(request, "parlio/question.html")
+
+
+# User handling routes:
 
 # Log user in
 def login_view(request):
@@ -136,76 +206,7 @@ def register(request):
         return render(request, "parlio/register.html")
 
 
-@login_required(redirect_field_name='my_redirect_field') 
-def question(request):
-
-    if request.method == "GET":
-        return render(request, "parlio/question.html")
-
-    # Check if method is POST
-    elif request.method == "POST":
-
-        # Take in the data the user submitted and save it as form
-        questionId = request.POST["questionId"]
-
-        #print(questionId)
-
-        url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions?uIN=" + questionId
-        #print(url)
-
-        results = []
-
-        response = requests.get(url)
-        jsonResponse = response.json()
-        questions = jsonResponse["results"]
-
-        # Check if user has question bookmarked
-        bookmarkedQuestions = Question.objects.filter(bookmarkBy=request.user).values_list('uniqueId', flat=True)
-
-        for question in questions:
-            
-            entry = {}
-
-            questionID = int(question['value']['id'])
-            if questionID in bookmarkedQuestions:
-                print("It's a match!")
-                isBookmarked = True
-            else:
-                print("It's not a match")
-                isBookmarked = False
-
-            questionSubject = question['value']['heading']
-            
-            try:
-                questionAnswered = question['value']['dateAnswered'][0:10]
-            except:
-                questionAnswered = "Awaiting answer"
-            
-
-            entry.update({'id':questionID, 'subject':questionSubject, 'answered':questionAnswered, 'bookmarked': isBookmarked})
-            results.append(entry)
-            
-
-            print(results)
-
-        if not results:
-            status = "No questions found!"
-        else:
-            status = ""
-
-      
-       
-        return render(request, "parlio/question.html", {
-                "results": results, 
-                "questionId": questionId,
-                "status": status
-            })
-
-    else:
-
-        return render(request, "parlio/question.html")
-
-
+# API routes:
 
 @login_required(redirect_field_name='my_redirect_field') 
 def onWatchlist(request, questionId):
@@ -225,7 +226,6 @@ def onWatchlist(request, questionId):
         print("no")
 
     return JsonResponse({"message": "Question checked", "questionPresent": present}, status=201)
-
 
 
 @login_required(redirect_field_name='my_redirect_field') 
@@ -284,39 +284,36 @@ def bookmark(request, questionId):
 @login_required(redirect_field_name='my_redirect_field') 
 def notifyCheck(request):
 
-    watchlistQuestions = Question.objects.filter(watchlistBy=request.user).values_list('uniqueId', flat=True)
-    
-    print("Questions on watchlist: ", watchlistQuestions)
+    watchlistQuestions = Question.objects.filter(watchlistBy=request.user).values_list('uniqueId', flat=True)    
+    print("Debug: Questions on watchlist: ", watchlistQuestions)
 
+    # Check if any question on watchlist has been answered
     for question in watchlistQuestions:
         
-        # Test url: url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions/1603046?expandMember=true"
         url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions/" + str(question) + "?expandMember=true"
-        print(url)
-
         response = requests.get(url)
         jsonResponse = response.json()
-        print(jsonResponse)
-
+        
         dateAnswered = jsonResponse['value']['dateAnswered']
         
         if (dateAnswered is None):
-            print("Question remains unanswered")
+            print("Debug: Question remains unanswered...")
 
         else:
-            print("Question has now been answered")
+            print("Debug: Question has now been answered!")
 
-            # Create notification
+            # Create new notification
             question = Question.objects.get(uniqueId=question)
             notification = Notification(question=question, user=request.user)
             notification.save()
 
-            # Remove from watchlist
+            # Remove question from watchlist
             user = User.objects.get(id=request.user.id)
             user.watchlistQuestion.remove(question)
 
+    # Count notifications
     notifications = Notification.objects.filter(is_read=False, user=request.user).count()
-    print(notifications)
+    print("Debug: User has", notifications, "notifications.")
     
     return JsonResponse({"message": "Question checked", "notifications": notifications}, status=201)
 
