@@ -28,12 +28,14 @@ def annunciator(request):
 def profile(request, profile):
 
     # Get question IDs corresponding to notifications
-    notifications = Notification.objects.filter(user=request.user).values_list('question', flat=True)
+    notifications = Notification.objects.filter(
+        user=request.user).values_list('question', flat=True)
 
     questions = []
 
     for notification in notifications:
-        question = Question.objects.filter(pk=notification).values_list('uniqueId', flat=True).first()
+        question = Question.objects.filter(
+            pk=notification).values_list('uniqueId', flat=True).first()
         questions.append(question)
 
     foo = []
@@ -41,29 +43,33 @@ def profile(request, profile):
 
     # For each question, create a dictionary (id, question, etc) then add to list
     for question in questions:
-        url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions/" + str(question)
+        url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions/" + \
+            str(question)
 
         response = requests.get(url)
         jsonResponse = response.json()
         questions = jsonResponse
         print(questions['value']['id'])
 
-        bar = {"id": num, "uIn": questions['value']['uin'], "heading": questions['value']['heading'], "answeredOn": questions['value']['dateAnswered'][0:10], "questionText":questions['value']['questionText'],  "answerText":questions['value']['answerText']   }
+        bar = {"id": num, "uIn": questions['value']['uin'], "heading": questions['value']['heading'], "answeredOn": questions['value']
+               ['dateAnswered'][0:10], "questionText": questions['value']['questionText'],  "answerText": questions['value']['answerText']}
         foo.append(bar)
 
         print(bar)
         num = num + 1
-    
+
     print(foo)
 
     # Get bookmarked questions
-    bookmarkedQuestions = Question.objects.filter(bookmarkBy=request.user).values_list('uniqueId', flat=True)
+    bookmarkedQuestions = Question.objects.filter(
+        bookmarkBy=request.user).values_list('uniqueId', flat=True)
     print(bookmarkedQuestions)
 
     bookmarked = []
 
     for bookmarkedQuestion in bookmarkedQuestions:
-        url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions/" + str(bookmarkedQuestion)
+        url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions/" + \
+            str(bookmarkedQuestion)
         print(url)
         response = requests.get(url)
         jsonResponse = response.json()
@@ -71,18 +77,19 @@ def profile(request, profile):
         print(questions['value']['id'])
         print(questions['value']['uin'])
         print(questions['value']['heading'])
-        
-        item = {"id": questions['value']['id'], "uin": questions['value']['uin'], "heading":questions['value']['heading']}
+
+        item = {"id": questions['value']['id'], "uin": questions['value']
+                ['uin'], "heading": questions['value']['heading']}
         bookmarked.append(item)
 
     return render(request, "parlio/user.html", {
-            "notifications": foo,
-            "bookmarks": bookmarked
-        })
+        "notifications": foo,
+        "bookmarks": bookmarked
+    })
 
 
 # Search, view, and bookmark PQs
-@login_required(redirect_field_name='my_redirect_field') 
+@login_required(redirect_field_name='my_redirect_field')
 def question(request):
 
     if request.method == "GET":
@@ -94,10 +101,10 @@ def question(request):
         # Take in the data the user submitted and save it as form
         questionId = request.POST["questionId"]
 
-        #print(questionId)
+        # print(questionId)
 
         url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions?uIN=" + questionId
-        #print(url)
+        # print(url)
 
         results = []
 
@@ -106,10 +113,11 @@ def question(request):
         questions = jsonResponse["results"]
 
         # Check if user has question bookmarked
-        bookmarkedQuestions = Question.objects.filter(bookmarkBy=request.user).values_list('uniqueId', flat=True)
+        bookmarkedQuestions = Question.objects.filter(
+            bookmarkBy=request.user).values_list('uniqueId', flat=True)
 
         for question in questions:
-            
+
             entry = {}
 
             questionID = int(question['value']['id'])
@@ -121,34 +129,35 @@ def question(request):
                 isBookmarked = False
 
             questionSubject = question['value']['heading']
-            
+
             try:
                 questionAnswered = question['value']['dateAnswered'][0:10]
             except:
                 questionAnswered = "Awaiting answer"
-            
-            entry.update({'id':questionID, 'subject':questionSubject, 'answered':questionAnswered, 'bookmarked': isBookmarked})
+
+            entry.update({'id': questionID, 'subject': questionSubject,
+                         'answered': questionAnswered, 'bookmarked': isBookmarked})
             results.append(entry)
-            
+
             print(results)
 
         if not results:
             status = "No questions found!"
         else:
             status = ""
-  
+
         return render(request, "parlio/question.html", {
-                "results": results, 
-                "questionId": questionId,
-                "status": status
-            })
+            "results": results,
+            "questionId": questionId,
+            "status": status
+        })
 
     else:
 
         return render(request, "parlio/question.html")
 
 
-# User handling routes:
+# User handling routes
 
 # Log user in
 def login_view(request):
@@ -172,7 +181,8 @@ def login_view(request):
 
 
 # Log user out
-@login_required(redirect_field_name='my_redirect_field')   # Redirect to login. Route saved in settings.py
+# Redirect to login. Route saved in settings.py
+@login_required(redirect_field_name='my_redirect_field')
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
@@ -205,21 +215,22 @@ def register(request):
     else:
         return render(request, "parlio/register.html")
 
+# API routes
 
-# API routes:
 
-@login_required(redirect_field_name='my_redirect_field') 
+@login_required(redirect_field_name='my_redirect_field')
 def onWatchlist(request, questionId):
-        
+
     # Check if user has question on watchlist
-    watchlistQuestions = Question.objects.filter(watchlistBy=request.user).values_list('uniqueId', flat=True)
+    watchlistQuestions = Question.objects.filter(
+        watchlistBy=request.user).values_list('uniqueId', flat=True)
 
     print(watchlistQuestions)
     print(questionId)
-    
+
     if questionId in watchlistQuestions:
-        
-        present = True    
+
+        present = True
         print("yes")
     else:
         present = False
@@ -228,29 +239,30 @@ def onWatchlist(request, questionId):
     return JsonResponse({"message": "Question checked", "questionPresent": present}, status=201)
 
 
-@login_required(redirect_field_name='my_redirect_field') 
+@login_required(redirect_field_name='my_redirect_field')
 def notifyMe(request, questionId):
 
     # Check if user has question on watchlist
-    watchlistQuestions = Question.objects.filter(watchlistBy=request.user).values_list('uniqueId', flat=True)
+    watchlistQuestions = Question.objects.filter(
+        watchlistBy=request.user).values_list('uniqueId', flat=True)
 
     # Debug
     print("Questions on watchlist: ", watchlistQuestions)
-    
+
     # Get user
     user = User.objects.filter(id=request.user.id).first()
 
     # If question already on watchlist, removed
     if questionId in watchlistQuestions:
-        
+
         question = Question.objects.filter(uniqueId=questionId).first()
         user.watchlistQuestion.remove(question)
-        
+
         message = "Question removed from your watchlist"
 
     # If question not on watchlist, add
     else:
-        
+
         question = Question(uniqueId=questionId)
         question.save()
         user.watchlistQuestion.add(question)
@@ -260,14 +272,14 @@ def notifyMe(request, questionId):
     return JsonResponse({"message": message}, status=201)
 
 
-@login_required(redirect_field_name='my_redirect_field') 
+@login_required(redirect_field_name='my_redirect_field')
 def bookmark(request, questionId):
-    
+
     if request.user.bookmarkQuestion.filter(uniqueId=questionId).exists():
-        
+
         bookmarkedQuestion = Question.objects.get(uniqueId=questionId)
         request.user.bookmarkQuestion.remove(bookmarkedQuestion)
-        
+
         return JsonResponse({"message": "Question removed from bookmarks", "star": False}, status=201)
 
     else:
@@ -278,24 +290,26 @@ def bookmark(request, questionId):
         request.user.bookmarkQuestion.add(newBookmark)
 
         return JsonResponse({"message": "New question added from bookmarks", "star": True}, status=201)
-   
+
 
 # Check if watchlist question answered. If so, remove from watchlist and create notification
-@login_required(redirect_field_name='my_redirect_field') 
+@login_required(redirect_field_name='my_redirect_field')
 def notifyCheck(request):
 
-    watchlistQuestions = Question.objects.filter(watchlistBy=request.user).values_list('uniqueId', flat=True)    
+    watchlistQuestions = Question.objects.filter(
+        watchlistBy=request.user).values_list('uniqueId', flat=True)
     print("Debug: Questions on watchlist: ", watchlistQuestions)
 
     # Check if any question on watchlist has been answered
     for question in watchlistQuestions:
-        
-        url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions/" + str(question) + "?expandMember=true"
+
+        url = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions/" + \
+            str(question) + "?expandMember=true"
         response = requests.get(url)
         jsonResponse = response.json()
-        
+
         dateAnswered = jsonResponse['value']['dateAnswered']
-        
+
         if (dateAnswered is None):
             print("Debug: Question remains unanswered...")
 
@@ -312,9 +326,10 @@ def notifyCheck(request):
             user.watchlistQuestion.remove(question)
 
     # Count notifications
-    notifications = Notification.objects.filter(is_read=False, user=request.user).count()
+    notifications = Notification.objects.filter(
+        is_read=False, user=request.user).count()
     print("Debug: User has", notifications, "notifications.")
-    
+
     return JsonResponse({"message": "Question checked", "notifications": notifications}, status=201)
 
 
@@ -336,7 +351,7 @@ def isSitting(request):
         commonsSitting = True
         print("Debug: the House of Commons is sitting")
 
-    # Lords API route 
+    # Lords API route
     lordsUrl = "https://now-api.parliament.uk/api/Message/message/LordsMain/current"
     response = requests.get(lordsUrl)
     jsonResponse = response.json()
@@ -351,4 +366,4 @@ def isSitting(request):
         lordsSitting = True
         print("Debug: the House of Lords is sitting")
 
-    return JsonResponse({"message": "Sitting checked", "commonsSitting": commonsSitting, "lordsSitting": lordsSitting }, status=201)
+    return JsonResponse({"message": "Sitting checked", "commonsSitting": commonsSitting, "lordsSitting": lordsSitting}, status=201)
