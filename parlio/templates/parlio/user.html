@@ -19,7 +19,7 @@
       <div class="accordion-body">
         <div style="padding-bottom: 2rem;">
           {{item.answerText|safe}}
-          <button type="button" class="btn btn-danger float-end">Dismiss</button>
+          <button type="button" id={{item.id}} class="btn btn-danger float-end notificationDismiss">Dismiss</button>
       </div>
     </div>
     </div>
@@ -35,8 +35,10 @@
    <div class="alert alert-custom border bookmarkQuestion" role="alert">
   UIN{{bookmark.uin}} ({{bookmark.heading}})
   <button type="button" id={{bookmark.id}} class="btn btn-danger float-end ml-2 removeBookmark" style="position: relative; top: -6px;">Remove</button>
-  <a class="btn btn-primary float-end "  style="position: relative; top: -6px;"href="https://questions-statements.parliament.uk/written-questions?SearchTerm={{bookmark.uin}}" target="_blank" rel="noopener noreferrer" role="button">View</a>
+  <a class="btn btn-primary float-end"  style="position: relative; top: -6px;"href="https://questions-statements.parliament.uk/written-questions?SearchTerm={{bookmark.uin}}" target="_blank" rel="noopener noreferrer" role="button">View</a>
 </div>
+
+{% endfor %}
 
 <script src="{% static 'parlio/js/background.js' %}"></script>
 <script>
@@ -62,9 +64,15 @@
           element.parentElement.remove(); 
           });
     }
+
+    else if (element.classList.contains('notificationDismiss')) {
+      console.log(element.id)
+
+      // remove from db and remove item
+      
+    }
    
   };
 </script>
 
-{% endfor %}
 {% endblock %}

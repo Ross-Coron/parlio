@@ -39,7 +39,7 @@ def profile(request, profile):
         questions.append(question)
 
     foo = []
-    num = 0
+   # num = 0
 
     # For each question, create a dictionary (id, question, etc) then add to list
     for question in questions:
@@ -51,12 +51,12 @@ def profile(request, profile):
         questions = jsonResponse
         print(questions['value']['id'])
 
-        bar = {"id": num, "uIn": questions['value']['uin'], "heading": questions['value']['heading'], "answeredOn": questions['value']
+        bar = {"id": questions['value']['id'], "uIn": questions['value']['uin'], "heading": questions['value']['heading'], "answeredOn": questions['value']
                ['dateAnswered'][0:10], "questionText": questions['value']['questionText'],  "answerText": questions['value']['answerText']}
         foo.append(bar)
 
         print(bar)
-        num = num + 1
+     #   num = num + 1
 
     print(foo)
 
