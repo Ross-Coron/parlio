@@ -1,26 +1,39 @@
 {% extends "parlio/layout.html" %}
 {% block body %}
 
-<h2>Login</h2>
-
-{% if message %}
-<div>{{ message }}</div>
-{% endif %}
-<hr><br>
-
-<form action="{% url 'login' %}" method="post">
-  {% csrf_token %}
-  <div class="form-group">
-   <input autofocus class="form-control" type="text" name="username" placeholder="Username">
+<div class="d-flex p-4 justify-content-center">
+   <h1><b>Log In</b></h1>
 </div>
-<br>
-<div class="form-group">
-   <input class="form-control" type="password" name="password" placeholder="Password">
-</div>
-<br>
-<input class="btn btn-primary" type="submit" value="Login">
-</form>
 
-<br>Don't have an account? <a href="{% url 'register' %}">Register here.</a>
+<div class="container">
+   <div class="row pt-4">
+      <div class="col-4">
+      </div>
+      <div class="col-4">
 
-{% endblock %}
+         {% if message %}
+         <div>{{ message }}</div>
+         {% endif %}
+         <hr><br>
+
+         <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+               <input autofocus class="form-control" type="text" name="username" placeholder="Username">
+            </div>
+            <br>
+            <div class="form-group">
+               <input class="form-control" type="password" name="password" placeholder="Password">
+            </div>
+            <br>
+            <input class="btn btn-primary" type="submit" value="Login">
+         </form>
+
+         <br>Don't have an account? Register <a href="{% url 'register' %}">here.</a>
+      </div>
+
+   </div>
+   <div class="col-4">
+   </div>
+
+   {% endblock %}

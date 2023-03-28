@@ -1,7 +1,15 @@
 {% extends "parlio/layout.html" %}
 {% block body %}
 
-<h2>Register</h2>
+<div class="d-flex p-4 justify-content-center">
+   <h1><b>Register</b></h1>
+ </div>
+
+ <div class="container">
+   <div class="row pt-4">
+     <div class="col-4">
+     </div>
+     <div class="col-4">
 
 {% if message %}
 <div>{{ message }}</div>
@@ -29,6 +37,10 @@
 <input class="btn btn-primary" type="submit" value="Register">
 </form>
 
-<br>Already have an account? <a href="{% url 'login' %}">Log In here.</a>
+<br>Already have an account? Log In <a href="{% url 'login' %}">here.</a>
+
+</div>
+<div class="col-4">
+</div>
 
 {% endblock %}

@@ -275,10 +275,13 @@ def notifyMe(request, questionId):
 @login_required(redirect_field_name='my_redirect_field')
 def bookmark(request, questionId):
 
-    if request.user.bookmarkQuestion.filter(uniqueId=questionId).exists():
+    user = User.objects.get(id=request.user.id)
 
+    if user.bookmarkQuestion.filter(uniqueId=questionId).exists():
+
+        # TODO issue because of get??
         bookmarkedQuestion = Question.objects.get(uniqueId=questionId)
-        request.user.bookmarkQuestion.remove(bookmarkedQuestion)
+        user.bookmarkQuestion.remove(bookmarkedQuestion)
 
         return JsonResponse({"message": "Question removed from bookmarks", "star": False}, status=201)
 
@@ -316,7 +319,7 @@ def notifyCheck(request):
         else:
             print("Debug: Question has now been answered!")
 
-            # Create new notification
+            # Create new notification TODO ISSUE WITH GET
             question = Question.objects.get(uniqueId=question)
             notification = Notification(question=question, user=request.user)
             notification.save()
@@ -367,3 +370,8 @@ def isSitting(request):
         print("Debug: the House of Lords is sitting")
 
     return JsonResponse({"message": "Sitting checked", "commonsSitting": commonsSitting, "lordsSitting": lordsSitting}, status=201)
+
+
+def dismissNotification(request, questionId):
+    print("U R HERE:", questionId)
+    pass

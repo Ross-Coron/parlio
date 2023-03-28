@@ -52,26 +52,31 @@
     const element = event.target;
     if (element.classList.contains('removeBookmark')) {
 
-          console.log(element.id)
+      console.log(element.id)
 
-          fetch(`/bookmark/${element.id}`)
-          .then((response) => response.json())
-          .then((result) => {
-          })
+        fetch(`/bookmark/${element.id}`)
+        .then((response) => response.json())
+        .then((result) => {
+        })
 
-          element.parentElement.style.animationPlayState = 'running';
-          element.parentElement.addEventListener('animationend', () => {
-          element.parentElement.remove(); 
-          });
+        element.parentElement.style.animationPlayState = 'running';
+        element.parentElement.addEventListener('animationend', () => {
+        element.parentElement.remove(); 
+        });
     }
 
     else if (element.classList.contains('notificationDismiss')) {
+      
       console.log(element.id)
 
-      // remove from db and remove item
+      fetch(`/dismissNotification/${element.id}`)
+        .then((response) => response.json())
+        .then((result) => {
+        })
       
+      // TODO: find / use better syntax
+      element.parentElement.parentElement.parentElement.parentElement.remove();   
     }
-   
   };
 </script>
 
