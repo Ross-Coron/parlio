@@ -1,27 +1,53 @@
 function isSitting() {
 
+    const commonsStatus = document.getElementById('commonsSitting')
+    const lordsStatus = document.getElementById('lordsSitting')
+    var commonsAlert = new Audio('https://now.parliament.uk/dist/newslide-commons.mp3');
+    //var LordsAlert = new Audio('https://now.parliament.uk/dist/newslide-lords.mp3');
+
+
     fetch('/isSitting')
         .then((response) => response.json())
         .then((result) => {
             console.log(result.message)
 
+            if (commonsStatus.innerHTML == "Not sitting" && result['commonsSitting'] == True){
+                console.log("Commons alert played")
+                commonsAlert.play();
+            }
+
+            else if (commonsStatus.innerHTML == "Sitting" && result['commonsSitting'] == False){
+                console.log("Commons alert played")
+                commonsAlert.play();
+            }
+
+            if (lordsStatus.innerHTML == "Not sitting" && result['lordsSitting'] == True){
+                console.log("Lords alert played")
+                lordsAlert.play();
+            }
+
+            else if (lordsStatus.innerHTML == "Sitting" && result['lordsSitting'] == False){
+                console.log("Lords alert played")
+                lordsAlert.play();
+            }
+
             if (result['commonsSitting'] == false) {
-                document.getElementById('commonsSitting').innerHTML = "Not sitting"
+                commonsStatus.innerHTML = "Not sitting"
                 document.getElementById('liveCommons').style.animationPlayState = 'initial'
                 document.getElementById('liveCommons').style.animationPlayState = 'paused'
             }
             else {
-                document.getElementById('commonsSitting').innerHTML = "Sitting"
+                commonsStatus.innerHTML.innerHTML = "Sitting"
                 document.getElementById('liveCommons').style.animationPlayState = 'running'
             }
 
             if (result['lordsSitting'] == false) {
-                document.getElementById('lordsSitting').innerHTML = "Not sitting"
+                lordsStatus.innerHTML = "Not sitting"
                 document.getElementById('liveLords').style.animationPlayState = 'initial'
                 document.getElementById('liveLords').style.animationPlayState = 'paused'
             }
             else {
-                document.getElementById('lordsSitting').innerHTML = "Sitting"
+                lordsStatus.innerHTML = "Sitting"
                 document.getElementById('liveLords').style.animationPlayState = 'running'
             }
         });

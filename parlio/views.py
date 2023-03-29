@@ -11,7 +11,7 @@ import requests
 import json
 
 
-# Visible routes:
+### Visible routes: ###
 
 # Default, index route. Shows whether the House of Commons and/or Lords are sitting.
 def index(request):
@@ -157,7 +157,7 @@ def question(request):
         return render(request, "parlio/question.html")
 
 
-# User handling routes
+### User handling routes: ###
 
 # Log user in
 def login_view(request):
@@ -215,7 +215,7 @@ def register(request):
     else:
         return render(request, "parlio/register.html")
 
-# API routes
+### API routes: ###
 
 
 @login_required(redirect_field_name='my_redirect_field')
@@ -373,5 +373,15 @@ def isSitting(request):
 
 
 def dismissNotification(request, questionId):
-    print("U R HERE:", questionId)
-    pass
+    print("DEBUG: dismissNotification -", questionId)
+    
+    # Get question to filter notifications by
+    question = Question.objects.get(uniqueId=questionId)
+
+    # Get notification 
+    notification = Notification.objects.get(question=question)
+    notification.delete()
+    
+    request.user.watchlistQuestion.remove(question)
+
+    return JsonResponse({"message": "Notification dismissed"}, status=201) 
