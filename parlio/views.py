@@ -347,11 +347,11 @@ def isSitting(request):
 
     # If Commons not sitting or sitting
     if jsonResponse['slides'][0]['type'] == 'BlankSlide':
-        commonsSitting = False
+        commonsSitting = "Not sitting"
         print("Debug: the House of Commons is NOT sitting")
 
     else:
-        commonsSitting = True
+        commonsSitting = "Sitting"
         print("Debug: the House of Commons is sitting")
 
     # Lords API route
@@ -362,11 +362,11 @@ def isSitting(request):
 
     # If Commons not sitting or sitting
     if jsonResponse['slides'][0]['type'] == 'BlankSlide':
-        lordsSitting = False
+        lordsSitting = "Not sitting"
         print("Debug: the House of Lords is NOT sitting")
 
     else:
-        lordsSitting = True
+        lordsSitting = "Sitting"
         print("Debug: the House of Lords is sitting")
 
     return JsonResponse({"message": "Sitting checked", "commonsSitting": commonsSitting, "lordsSitting": lordsSitting}, status=201)

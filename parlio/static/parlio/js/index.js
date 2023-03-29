@@ -3,35 +3,37 @@ function isSitting() {
     const commonsStatus = document.getElementById('commonsSitting')
     const lordsStatus = document.getElementById('lordsSitting')
     var commonsAlert = new Audio('https://now.parliament.uk/dist/newslide-commons.mp3');
-    //var LordsAlert = new Audio('https://now.parliament.uk/dist/newslide-lords.mp3');
+    var LordsAlert = new Audio('https://now.parliament.uk/dist/newslide-lords.mp3');
 
 
     fetch('/isSitting')
         .then((response) => response.json())
         .then((result) => {
             console.log(result.message)
-
-            if (commonsStatus.innerHTML == "Not sitting" && result['commonsSitting'] == True){
+""
+            if (commonsStatus.innerHTML == "Not sitting" && result['commonsSitting'] == "Sitting"){
                 console.log("Commons alert played")
                 commonsAlert.play();
             }
 
-            else if (commonsStatus.innerHTML == "Sitting" && result['commonsSitting'] == False){
+            else if (commonsStatus.innerHTML == "Sitting" && result['commonsSitting'] == "Not sitting"){
                 console.log("Commons alert played")
                 commonsAlert.play();
             }
 
-            if (lordsStatus.innerHTML == "Not sitting" && result['lordsSitting'] == True){
+            if (lordsStatus.innerHTML == "Not sitting" && result['lordsSitting'] == "Sitting"){
                 console.log("Lords alert played")
                 lordsAlert.play();
             }
 
-            else if (lordsStatus.innerHTML == "Sitting" && result['lordsSitting'] == False){
+            else if (lordsStatus.innerHTML == "Sitting" && result['lordsSitting'] == "Not sitting"){
                 console.log("Lords alert played")
                 lordsAlert.play();
             }
 
-            if (result['commonsSitting'] == false) {
+            //
+
+            if (result['commonsSitting'] == "Not sitting") {
                 commonsStatus.innerHTML = "Not sitting"
                 document.getElementById('liveCommons').style.animationPlayState = 'initial'
                 document.getElementById('liveCommons').style.animationPlayState = 'paused'
@@ -41,7 +43,7 @@ function isSitting() {
                 document.getElementById('liveCommons').style.animationPlayState = 'running'
             }
 
-            if (result['lordsSitting'] == false) {
+            if (result['lordsSitting'] == "Not sitting") {
                 lordsStatus.innerHTML = "Not sitting"
                 document.getElementById('liveLords').style.animationPlayState = 'initial'
                 document.getElementById('liveLords').style.animationPlayState = 'paused'
@@ -49,6 +51,7 @@ function isSitting() {
             else {
                 lordsStatus.innerHTML = "Sitting"
                 document.getElementById('liveLords').style.animationPlayState = 'running'
+
             }
         });
 
@@ -71,12 +74,8 @@ function startTime() {
     let date = today.getDate()
     let month = today.getMonth()
 
-
-
-
     let year = today.getFullYear();
     document.getElementById('date').innerHTML = date + " " + monthNames[month] + " " + year
-
 
     setTimeout(startTime, 1000);
 }
