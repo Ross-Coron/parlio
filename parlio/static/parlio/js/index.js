@@ -3,14 +3,13 @@ function isSitting() {
     const commonsStatus = document.getElementById('commonsSitting')
     const lordsStatus = document.getElementById('lordsSitting')
     var commonsAlert = new Audio('https://now.parliament.uk/dist/newslide-commons.mp3');
-    var LordsAlert = new Audio('https://now.parliament.uk/dist/newslide-lords.mp3');
-
+    var lordsAlert = new Audio('https://now.parliament.uk/dist/newslide-lords.mp3');
 
     fetch('/isSitting')
         .then((response) => response.json())
         .then((result) => {
             console.log(result.message)
-""
+            
             if (commonsStatus.innerHTML == "Not sitting" && result['commonsSitting'] == "Sitting"){
                 console.log("Commons alert played")
                 commonsAlert.play();
