@@ -13,9 +13,10 @@
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
   <title>PARL.I/O</title>
+  
   <link rel="stylesheet" href="{% static 'parlio/styles.css' %}" />
 
-  <link rel="icon" href="{% static 'parlio/media/favicon.png' %}"/>
+  <link rel="icon" href="{% static 'parlio/media/favicon.png' %}" />
 
 </head>
 
@@ -30,7 +31,8 @@
 
   <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand abs" href="{% url 'index' %}"><img src="{% static 'parlio/media/parlio_logo.png' %}" alt="" height="55">
+      <a class="navbar-brand abs" href="{% url 'index' %}"><img src="{% static 'parlio/media/parlio_logo.png' %}" alt=""
+          height="55">
 
         <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNavbar">
           <span class="navbar-toggler-icon"></span>
@@ -53,8 +55,8 @@
           </ul>
 
           <ul class="navbar-nav ms-auto">
+            
             {% if user.is_authenticated %}
-
             <li class="nav-item">
               <a class="nav-link" href="{% url 'profile' profile=user.id  %}"><strong>{{ user.username }}</strong>
                 <sup><span class="badge badge-pill badge-danger" id="notifications"></span></sup></a>
@@ -66,7 +68,6 @@
             </li>
 
             {% else %}
-
             <li class="nav-item">
               <a class="nav-link" href="{% url 'register' %}">Register</a>
             </li>
@@ -74,7 +75,6 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'login' %}"> Log In</a>
             </li>
-
             {% endif %}
           </ul>
         </div>
@@ -82,12 +82,10 @@
   </nav>
 
   <div class="body">
-
     <br>
     {% block body %}
     {% endblock %}
   </div>
-
 
   <footer class="footer mt-auto py-3 bg-light fixed-bottom">
 
@@ -105,5 +103,4 @@
   </footer>
 
 </body>
-
 </html>

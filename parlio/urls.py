@@ -10,7 +10,7 @@ urlpatterns = [
     path("register", views.register, name="register"),
     path("question", views.question, name="question"),
 
-   # path("fetch", views.fetch, name="fetch"),
+    # API routes
     path("onWatchlist/<int:questionId>", views.onWatchlist, name="onWatchlist"),
     path("notifyCheck", views.notifyCheck, name="notifyCheck"),
     path("bookmark/<int:questionId>", views.bookmark, name="bookmark"),

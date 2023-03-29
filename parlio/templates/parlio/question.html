@@ -58,7 +58,6 @@
       <p><span><b>Question: </b></span><span id="question"></span></p>
       <p><b>Asked by: </b><span id="askedBy"></span></p>
       <span><b>Asked on: </b><span id="askedOn"></span></p>
-
         <hr>
 
         <div id="answeredQuestion">
@@ -76,13 +75,17 @@
             </div>
         </div>
     </div>
-    
+
     {% else %}
     {{status}}
     {% endif %}
-
   </div>
 
   <script src="{% static 'parlio/js/question.js' %}"></script>
+  <script src="{% static 'parlio/js/background.js' %}"></script>
+  <script>
+    notifyCheck()
+    setInterval(notifyCheck, 30000)
+  </script>
 
   {% endblock %}

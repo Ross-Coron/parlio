@@ -4,89 +4,89 @@
 {% block body %}
 
 <div class="container">
-  
-<h4>Notifications:</h4>
 
-{% for item in notifications %}
-<div class="accordion mb-3" id="accordionExample">
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="heading{{item.id}}">
-      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{item.id}}" aria-expanded="true" aria-controls="collapse{{item.id}}">
-        PQ-{{item.uIn}} ({{item.heading}}) was answered on {{item.answeredOn}}
-      </button>
-    </h2>
-    <div id="collapse{{item.id}}" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-      <div class="accordion-body">
-        <div style="padding-bottom: 2rem;">
-          {{item.answerText|safe}}
-          <button type="button" id={{item.id}} class="btn btn-danger float-end notificationDismiss">Dismiss</button>
+  <h4>Notifications:</h4>
+
+  {% for item in notifications %}
+  <div class="accordion mb-3" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="heading{{item.id}}">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{item.id}}"
+          aria-expanded="true" aria-controls="collapse{{item.id}}">
+          PQ-{{item.uIn}} ({{item.heading}}) was answered on {{item.answeredOn}}
+        </button>
+      </h2>
+      <div id="collapse{{item.id}}" class="accordion-collapse collapse" aria-labelledby="headingOne"
+        data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <div style="padding-bottom: 2rem;">
+            {{item.answerText|safe}}
+            <button type="button" id={{item.id}} class="btn btn-danger float-end notificationDismiss">Dismiss</button>
+          </div>
+        </div>
       </div>
     </div>
-    </div>
   </div>
-</div>
-{% empty%}
+  {% empty%}
+  <br>No notifications...<br>
+  {% endfor %}
 
-<br>No notifications...<br>
-
-{% endfor %}
-
-<br>
-<hr>
+  <br>
+  <hr>
 
   <h4>Bookmarked Questions:</h4>
   {% for bookmark in bookmarks %}
-   <div class="alert alert-custom border bookmarkQuestion" role="alert">
-  PQ-{{bookmark.uin}} ({{bookmark.heading}})
-  <button type="button" id={{bookmark.id}} class="btn btn-danger float-end ml-2 removeBookmark" style="position: relative; top: -6px;">Remove</button>
-  <a class="btn btn-primary float-end"  style="position: relative; top: -6px;"href="https://questions-statements.parliament.uk/written-questions?SearchTerm={{bookmark.uin}}" target="_blank" rel="noopener noreferrer" role="button">View</a>
-</div>
+  <div class="alert alert-custom border bookmarkQuestion" role="alert">
+    PQ-{{bookmark.uin}} ({{bookmark.heading}})
+    <button type="button" id={{bookmark.id}} class="btn btn-danger float-end ml-2 removeBookmark"
+      style="position: relative; top: -6px;">Remove</button>
+    <a class="btn btn-primary float-end" style="position: relative; top: -6px;"
+      href="https://questions-statements.parliament.uk/written-questions?SearchTerm={{bookmark.uin}}" target="_blank"
+      rel="noopener noreferrer" role="button">View</a>
+  </div>
 
-{% empty%}
+  {% empty%}
+  <br>No bookmarked questions...<br>
+  {% endfor %}
 
-<br>No bookmarked questions...<br>
+  <script src="{% static 'parlio/js/background.js' %}"></script>
+  <script>
 
-{% endfor %}
+    notifyCheck()
+    setInterval(notifyCheck, 30000)
 
+    document.addEventListener("click", removeBookmark);
+    function removeBookmark() {
 
-<script src="{% static 'parlio/js/background.js' %}"></script>
-<script>
+      const element = event.target;
+      if (element.classList.contains('removeBookmark')) {
 
-  notifyCheck()
-  setInterval(notifyCheck, 30000)
-
-  document.addEventListener("click", removeBookmark);
-  function removeBookmark() {
-
-    const element = event.target;
-    if (element.classList.contains('removeBookmark')) {
-
-      console.log(element.id)
+        console.log(element.id)
 
         fetch(`/bookmark/${element.id}`)
-        .then((response) => response.json())
-        .then((result) => {
-        })
+          .then((response) => response.json())
+          .then((result) => {
+          })
 
         element.parentElement.style.animationPlayState = 'running';
         element.parentElement.addEventListener('animationend', () => {
-        element.parentElement.remove(); 
+          element.parentElement.remove();
         });
-    }
+      }
 
-    else if (element.classList.contains('notificationDismiss')) {
-      
-      console.log(element.id)
+      else if (element.classList.contains('notificationDismiss')) {
 
-      fetch(`/dismissNotification/${element.id}`)
-        .then((response) => response.json())
-        .then((result) => {
-        })
-      
-      // TODO: find / use better syntax
-      element.parentElement.parentElement.parentElement.parentElement.remove();   
-    }
-  };
-</script>
+        console.log(element.id)
 
-{% endblock %}
+        fetch(`/dismissNotification/${element.id}`)
+          .then((response) => response.json())
+          .then((result) => {
+          })
+
+        // TODO: find / use better syntax
+        element.parentElement.parentElement.parentElement.parentElement.remove();
+      }
+    };
+  </script>
+
+  {% endblock %}
