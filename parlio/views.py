@@ -343,7 +343,7 @@ def isSitting(request):
     commonsUrl = "https://now-api.parliament.uk/api/Message/message/CommonsMain/current"
     response = requests.get(commonsUrl)
     jsonResponse = response.json()
-    print("Debug: Commons annunciator route: ", jsonResponse)
+    #print("Debug: Commons annunciator route: ", jsonResponse)
 
     # If Commons not sitting or sitting
     if jsonResponse['slides'][0]['type'] == 'BlankSlide':
@@ -358,7 +358,7 @@ def isSitting(request):
     lordsUrl = "https://now-api.parliament.uk/api/Message/message/LordsMain/current"
     response = requests.get(lordsUrl)
     jsonResponse = response.json()
-    print("Debug: Lords annunciator route: ", jsonResponse)
+    #print("Debug: Lords annunciator route: ", jsonResponse)
 
     # If Commons not sitting or sitting
     if jsonResponse['slides'][0]['type'] == 'BlankSlide':

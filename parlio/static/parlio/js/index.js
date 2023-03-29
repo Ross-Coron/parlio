@@ -50,7 +50,6 @@ function isSitting() {
             else {
                 lordsStatus.innerHTML = "Sitting"
                 document.getElementById('liveLords').style.animationPlayState = 'running'
-
             }
         });
 

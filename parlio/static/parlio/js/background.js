@@ -7,7 +7,7 @@ async function notifyCheck() {
             console.log(result)
             
             // If notifications, append user in NavBar with number
-            if (result.notifications >= 1){
+            if (result.notifications >= 1) {
                 document.getElementById('notifications').innerHTML = result.notifications
             }
 

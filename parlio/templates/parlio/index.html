@@ -57,5 +57,10 @@
   </div>
 
   <script src="{% static 'parlio/js/index.js' %}"></script>
-
+  <script src="{% static 'parlio/js/background.js' %}"></script>
+  <script>
+    notifyCheck()
+    setInterval(notifyCheck, 30000)
+  </script>
+  
   {% endblock %}

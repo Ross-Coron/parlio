@@ -7,4 +7,10 @@
   <img src="{% static 'parlio/media/annunciator.png' %}" class="rounded mx-auto d-block" alt="" height="300">
 </div>
 
+<script src="{% static 'parlio/js/background.js' %}"></script>
+<script>
+  notifyCheck()
+  setInterval(notifyCheck, 30000)
+</script>
+
 {% endblock %}
