@@ -7,7 +7,7 @@ class User(AbstractUser):
     watchlistQuestion = models.ManyToManyField('Question', blank=True, related_name="watchlistBy")
 
 class Question(models.Model):
-    uniqueId = models.IntegerField()
+    uniqueId = models.IntegerField(unique=True)
 
     def __str__(self):
         return f"{self.uniqueId}"
