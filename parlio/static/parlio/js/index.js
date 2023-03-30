@@ -2,8 +2,8 @@ function isSitting() {
 
     const commonsStatus = document.getElementById('commonsSitting')
     const lordsStatus = document.getElementById('lordsSitting')
-    var commonsAlert = new Audio('https://now.parliament.uk/dist/newslide-commons.mp3');
-    var lordsAlert = new Audio('https://now.parliament.uk/dist/newslide-lords.mp3');
+    const commonsAlert = new Audio('https://now.parliament.uk/dist/newslide-commons.mp3');
+    const lordsAlert = new Audio('https://now.parliament.uk/dist/newslide-lords.mp3');
 
     fetch('/isSitting')
         .then((response) => response.json())
@@ -38,7 +38,7 @@ function isSitting() {
                 document.getElementById('liveCommons').style.animationPlayState = 'paused'
             }
             else {
-                commonsStatus.innerHTML.innerHTML = "Sitting"
+                commonsStatus.innerHTML = "Sitting"
                 document.getElementById('liveCommons').style.animationPlayState = 'running'
             }
 

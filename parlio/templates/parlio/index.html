@@ -54,13 +54,18 @@
         </div>
       </div>
     </div>
-  </div>
+    <div class="row text-center pt-5">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="sound">
+        <label class="form-check-label" for="flexSwitchCheckDefault">Enable Sound</label>
+      </div>
+    </div>
 
   <script src="{% static 'parlio/js/index.js' %}"></script>
   <script src="{% static 'parlio/js/background.js' %}"></script>
   <script>
     notifyCheck()
-    setInterval(notifyCheck, 30000)
+    setInterval(notifyCheck, 300000)
   </script>
 
   {% endblock %}
