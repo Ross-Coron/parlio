@@ -23,6 +23,8 @@
   border: 1px
 }
 
+.clear { clear: both; height: 62px; }
+
 
 /* Animations */
 
