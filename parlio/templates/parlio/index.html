@@ -63,10 +63,12 @@
   </div>
 
   <script src="{% static 'parlio/js/index.js' %}"></script>
+  {% if user.is_authenticated %}
   <script src="{% static 'parlio/js/background.js' %}"></script>
   <script>
     notifyCheck()
     setInterval(notifyCheck, 300000)
   </script>
+  {% endif %}
 
   {% endblock %}
