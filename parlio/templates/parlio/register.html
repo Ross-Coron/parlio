@@ -2,45 +2,47 @@
 {% block body %}
 
 <div class="d-flex p-4 justify-content-center">
-   <h1><b>Register</b></h1>
+  <h1><b>Register</b></h1>
 </div>
 
 <div class="container">
-   <div class="row pt-4">
-      <div class="col-4">
-      </div>
-      <div class="col-4">
+  <div class="row pt-4">
+    <div class="col-4">
+    </div>
+    <div class="col-4">
 
-         {% if message %}
-         <div>{{ message }}</div>
-         {% endif %}
-         <hr><br>
+      {% if message %}
+      <div>{{ message }}</div>
+      {% endif %}
+      <hr><br>
 
-         <form action="{% url 'register' %}" method="post">
-            {% csrf_token %}
-            <div class="form-group">
-               <input class="form-control" autofocus type="text" name="username" placeholder="Username">
-            </div>
-            <br>
-            <div class="form-group">
-               <input class="form-control" type="email" name="email" placeholder="Email Address">
-            </div>
-            <br>
-            <div class="form-group">
-               <input class="form-control" type="password" name="password" placeholder="Password">
-            </div>
-            <br>
-            <div class="form-group">
-               <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
-            </div>
-            <br>
-            <input class="btn btn-primary" type="submit" value="Register">
-         </form>
+      <form action="{% url 'register' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <input class="form-control" autofocus type="text" name="username" placeholder="Username">
+        </div>
+        <br>
+        <div class="form-group">
+          <input class="form-control" type="email" name="email" placeholder="Email Address">
+        </div>
+        <br>
+        <div class="form-group">
+          <input class="form-control" type="password" name="password" placeholder="Password">
+        </div>
+        <br>
+        <div class="form-group">
+          <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+        </div>
+        <br>
+        <input class="btn btn-primary" type="submit" value="Register">
+      </form>
 
-         <br>Already have an account? Log In <a href="{% url 'login' %}">here.</a>
+      <br>Already have an account? Log In <a href="{% url 'login' %}">here.</a>
 
-      </div>
-      <div class="col-4">
-      </div>
+    </div>
+    <div class="col-4">
+    </div>
+  </div>
+</div>
 
-      {% endblock %}
+{% endblock %}

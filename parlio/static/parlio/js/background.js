@@ -1,11 +1,13 @@
-// Check if watchlist question answered
+// Check if watchlist question has been answered
 async function notifyCheck() {
+
     fetch('/notifyCheck')
         .then((response) => response.json())
         .then((result) => {
+
             console.log(result)
-            
-            // If notifications, append user in NavBar with number
+
+            // If notification(s) exist, add number to NavBar user icon as alert
             if (result.notifications >= 1) {
                 if (document.getElementById('notifications').innerHTML != result.notifications) {
                     document.getElementById('notifications').innerHTML = result.notifications

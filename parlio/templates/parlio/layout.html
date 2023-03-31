@@ -13,11 +13,8 @@
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
   <title>PARL.I/O</title>
-  
   <link rel="stylesheet" href="{% static 'parlio/styles.css' %}" />
-
   <link rel="icon" href="{% static 'parlio/media/favicon.png' %}" />
-
 </head>
 
 <body>
@@ -46,12 +43,6 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'question' %}">Question Tracker</a>
             </li>
-            <!-- <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="#myAlert" data-bs-toggle="collapse">Link</a>
-          </li> -->
           </ul>
 
           <ul class="navbar-nav ms-auto">
@@ -64,7 +55,6 @@
 
             <li class="nav-item">
               <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
-              <!-- TODO <a class="nav-link" href="{% url 'logout' %}" data-bs-target="#myModal" data-bs-toggle="modal">Log Out</a> -->
             </li>
 
             {% else %}
@@ -88,7 +78,6 @@
   </div>
 
   <footer class="footer mt-auto py-3 bg-light fixed-bottom">
-
     <div class="container">
       <div class="row">
         <div class="col">

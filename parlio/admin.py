@@ -5,7 +5,7 @@ from .models import User, Question, Notification
 admin.site.register(User)
 admin.site.register(Question)
 
-# Displays timestamp in Django admin view.
+# Displays timestamp in Django admin view (hidden by default)
 class NotificationAdmin(admin.ModelAdmin):
     readonly_fields = ('timestamp',)
 admin.site.register(Notification, NotificationAdmin)

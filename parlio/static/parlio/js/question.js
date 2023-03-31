@@ -9,19 +9,14 @@ const answeringBody = document.getElementById('answeringBody')
 const dueAnswer = document.getElementById('dueAnswer')
 const notifyMe = document.getElementById('watchQuestion')
 
-notifyCheck()
-setInterval(notifyCheck, 300000)
-
-
+// Populate PQ search table
 async function viewQuestion(id, bookmarked) {
-
     fetch(`/onWatchlist/${id}`)
         .then((response) => response.json())
         .then((result) => notifyMe.checked = result.questionPresent);
 
     questionTable.style.visibility = "visible"
 
-    // async function getQuestion() {
     var route = "https://writtenquestions-api.parliament.uk/api/writtenquestions/questions/QUESTION?expandMember=true"
     route = route.replace('QUESTION', id)
 
@@ -48,10 +43,11 @@ async function viewQuestion(id, bookmarked) {
         answeringBody.innerHTML = data['value']['answeringBodyName']
     }
 
-    // Function called by clicking 'notify me' checkbock
+    // Function called by clicking 'notify me' checkbox
     document.getElementById('watchQuestion').addEventListener('change', watchQuestion);
     document.getElementById('watchQuestion').dataset.id = id
 };
+
 
 // Add / remove question from user's watchlist
 function watchQuestion() {
@@ -61,36 +57,21 @@ function watchQuestion() {
         .then((result) => console.log(result.message));
 }
 
+
+// Add / remove question from user's bookmarks
 function bookmark(questionId) {
-    alert(questionId)
-    alert(this)
+    console.log(questionId)
 
     fetch(`/bookmark/${questionId}`)
         .then((response) => response.json())
         .then((result) => {
-            
+
+            // Update star icon 
             if (result.star == true) {
-                document.getElementById(`bookmark_${questionId}`).innerHTML = '&#9733'
+                document.getElementById(`bookmark_${questionId}`).innerHTML = '&#9733';
             }
             else {
-                document.getElementById(`bookmark_${questionId}`).innerHTML = '&#9734'
+                document.getElementById(`bookmark_${questionId}`).innerHTML = '&#9734';
             }
-        });
-}
-
-
-// Check if watchlist question answered
-async function notifyCheck() {
-    fetch('/notifyCheck')
-        .then((response) => response.json())
-        .then((result) => {
-            
-            console.log(result)
-            
-            // If notifications, append user in NavBar with number
-            if (result.notifications >= 1){
-                document.getElementById('notifications').innerHTML = result.notifications
-            }
-
         });
 }

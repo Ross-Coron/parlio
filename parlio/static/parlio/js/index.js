@@ -1,37 +1,42 @@
+// Checks if Houses of Parliament are sitting
 function isSitting() {
 
+    // Sitting / not sitting placeholders
     const commonsStatus = document.getElementById('commonsSitting')
     const lordsStatus = document.getElementById('lordsSitting')
+
+    // Alert sounds
     const commonsAlert = new Audio('https://now.parliament.uk/dist/newslide-commons.mp3');
     const lordsAlert = new Audio('https://now.parliament.uk/dist/newslide-lords.mp3');
 
+    // Query Parliament API
     fetch('/isSitting')
         .then((response) => response.json())
         .then((result) => {
             console.log(result.message)
-            
-            if (commonsStatus.innerHTML == "Not sitting" && result['commonsSitting'] == "Sitting"){
+
+            // If changes from sitting to not sitting (and vice versa), play alert sound
+            if (commonsStatus.innerHTML == "Not sitting" && result['commonsSitting'] == "Sitting") {
                 console.log("Commons alert played")
                 commonsAlert.play();
             }
 
-            else if (commonsStatus.innerHTML == "Sitting" && result['commonsSitting'] == "Not sitting"){
+            else if (commonsStatus.innerHTML == "Sitting" && result['commonsSitting'] == "Not sitting") {
                 console.log("Commons alert played")
                 commonsAlert.play();
             }
 
-            if (lordsStatus.innerHTML == "Not sitting" && result['lordsSitting'] == "Sitting"){
+            if (lordsStatus.innerHTML == "Not sitting" && result['lordsSitting'] == "Sitting") {
                 console.log("Lords alert played")
                 lordsAlert.play();
             }
 
-            else if (lordsStatus.innerHTML == "Sitting" && result['lordsSitting'] == "Not sitting"){
+            else if (lordsStatus.innerHTML == "Sitting" && result['lordsSitting'] == "Not sitting") {
                 console.log("Lords alert played")
                 lordsAlert.play();
             }
 
-            //
-
+            // If sitting, play animation
             if (result['commonsSitting'] == "Not sitting") {
                 commonsStatus.innerHTML = "Not sitting"
                 document.getElementById('liveCommons').style.animationPlayState = 'initial'
@@ -57,6 +62,7 @@ function isSitting() {
 }
 
 
+// Display live time and date
 function startTime() {
 
     const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -69,9 +75,8 @@ function startTime() {
     m = checkTime(m);
     document.getElementById('time').innerHTML = h + ":" + m;
 
-    let date = today.getDate()
-    let month = today.getMonth()
-
+    let date = today.getDate();
+    let month = today.getMonth();
     let year = today.getFullYear();
     document.getElementById('date').innerHTML = date + " " + monthNames[month] + " " + year
 
