@@ -1,5 +1,7 @@
 # Parl-I/O
 
+![Image of Parl-I/O](parlio.png)
+
 Hello World! 
 
 Welcome to Parl-I/O ('*Parlio*'), designed and implemented as my final project for Harvard's [CS50 Web Programming with Python and JavaScript](https://cs50.harvard.edu/web/2020/). Parl-I/O is a web application written primarily in Python and JavaScript.
