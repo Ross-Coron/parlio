@@ -144,10 +144,6 @@ def question(request):
             "status": status
         })
 
-    # #TODO: delete, redundant?
-    # else:
-    #     return render(request, "parlio/question.html")
-
 
 ### API routes: ###
 
